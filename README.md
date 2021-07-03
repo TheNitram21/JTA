@@ -4,6 +4,7 @@ A Java Wrapper for the Twitch API. **The API is in development currently, so the
 ## Summary
 1. [Building your first Bott](#building-your-first-bot)
 2. [Sending Messages](#sending-messages)
+3. [Events](#events)
 
 ## Building your first bot
 First of all, go to the [Twitch Developer Console](https://dev.twitch.tv/console/apps) and create an application. **2FA (Two Factor Authentication) has to be enabled for that.** Then you can start coding.
@@ -39,7 +40,7 @@ public static void main(String[] args) {
   
   try {
     // Connect to the chat.
-    chat.connect("OAUTH");
+    chat.connect("OAUTH", false);
     
     // Send the message.
     chat.sendMessage("Hi KonCha");
@@ -52,3 +53,43 @@ public static void main(String[] args) {
 }
 ```
 Here you can again see a String you need to fill in, `OAUTH`. You need to put the OAuth-Chat-Token of your user in there. Log into twitch with the user which should send the messages, then go to [Twitchapps](https://www.twitchapps.com/tmi) and get your token there.
+
+## Events
+To receive messages, you need an event listener. To create one, simply create a class implementing `Listener`. Then add it to the bot.
+```java
+public static void main(String[] args) {
+  // Initialize the library.
+  JTA.initialize();
+  
+  // Create a bot.
+  JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET");
+  
+  // Add the listener.
+  bot.addEventListeners(new MessageListener());
+  
+  // Get the user. In this case, I chose myself.
+  User user = bot.getUserByName("TheNitram21");
+  
+  // Get the chat of the user.
+  Chat chat = user.getChat();
+  
+  try {
+    // Connect to the chat.
+    chat.connect("OAUTH", false);
+    
+    // Send the message.
+    chat.sendMessage("Hi KonCha");
+  } catch(IrcException | IOExcecption e) {
+    e.printStackTrace();
+  }
+}
+
+public static class MessageListener implements Listener {
+  @Override
+  public void onMessageReceived(MessageReceivedEvent event) {
+    // Print the event.
+    System.out.println(event.toString());
+  }
+}
+```
+In this code example, you may ask: "Why don't we disconnect from the chat?" That's because you can only receive messages from chats you're connected to. Imagine getting all messages from a 100k viewers streamer!
