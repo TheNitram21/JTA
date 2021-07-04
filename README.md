@@ -2,11 +2,11 @@
 A Java Wrapper for the Twitch API. **The API is in development currently, so there can be a lot of problems.**
 
 ## Summary
-1. [Building your first Bott](#building-your-first-bot)
+1. [Building your first Bot](#building-your-first-bot)
 2. [Sending Messages](#sending-messages)
 3. [Events](#events)
 
-## Building your first bot
+## Building your first Bot
 First of all, go to the [Twitch Developer Console](https://dev.twitch.tv/console/apps) and create an application. **2FA (Two Factor Authentication) has to be enabled for that.** Then you can start coding.
 
 We tried to make the library as easy as possible, so to create a bot, you only need to do the following things:
