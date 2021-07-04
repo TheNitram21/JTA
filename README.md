@@ -93,7 +93,7 @@ public static class MessageListener implements Listener {
   }
 }
 ```
-In this code example, you may ask: "Why don't we disconnect from the chat?" That's because you can only receive messages from chats you're connected to. Imagine getting all messages from a 100k viewers streamer!
+In this code example, you may ask: "Why don't we disconnect from the chat?" That's because you can only receive messages from chats you're connected to. Imagine getting all messages from a 100k viewers streamer! (Your computer would make pew)
 
 ## Clips
 To get a clip, you only need to call `JTABot#getClipBySlug(String)` and you have your clip.
