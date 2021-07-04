@@ -7,6 +7,7 @@ import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.entities.ClipImpl;
 import de.arnomann.martin.jta.internal.entities.UserImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
+import de.arnomann.martin.jta.internal.util.Helpers;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.json.JSONArray;
@@ -73,11 +74,13 @@ public class JTABotImpl implements JTABot {
             JSONObject json = new JSONObject(response.body().string());
             JSONArray jsonArrayData = json.getJSONArray("data");
             for (Object object : jsonArrayData) {
-                if(((JSONObject) object).getString("broadcaster_login").equals(nameToSearch)) {
+                if (((JSONObject) object).getString("broadcaster_login").equals(nameToSearch)) {
                     return new UserImpl((JSONObject) object, this);
                 }
             }
-        } catch (JSONException | IOException e) { System.err.println("No results."); }
+        } catch (JSONException | IOException e) {
+            JTA.getLogger().error(Helpers.format("No results: No user with name {} found.", name));
+        }
         return null;
     }
 
@@ -91,7 +94,9 @@ public class JTABotImpl implements JTABot {
         try {
             JSONObject json = new JSONObject(response.body().string());
             return new UserImpl(json, this);
-        } catch (JSONException | IOException e) { System.err.println("No results."); }
+        } catch (JSONException | IOException e) {
+            JTA.getLogger().error(Helpers.format("No results: No user with id {} found.", id));
+        }
         return null;
     }
 
@@ -134,7 +139,7 @@ public class JTABotImpl implements JTABot {
             JSONObject json = new JSONObject(response.body().string());
             return new ClipImpl(this, json, getUserByName(json.getJSONObject("curator").getString("name")));
         } catch (JSONException | IOException e) {
-            System.err.println("No results.");
+            JTA.getLogger().error(Helpers.format("No results: No clip with slug {} found.", slug));
         }
         return null;
     }
