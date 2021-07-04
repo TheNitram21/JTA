@@ -5,6 +5,7 @@ A Java Wrapper for the Twitch API. **The API is in development currently, so the
 1. [Building your first Bot](#building-your-first-bot)
 2. [Sending Messages](#sending-messages)
 3. [Events](#events)
+4. [Clips](#clips)
 
 ## Building your first Bot
 First of all, go to the [Twitch Developer Console](https://dev.twitch.tv/console/apps) and create an application. **2FA (Two Factor Authentication) has to be enabled for that.** Then you can start coding.
@@ -93,3 +94,18 @@ public static class MessageListener implements Listener {
 }
 ```
 In this code example, you may ask: "Why don't we disconnect from the chat?" That's because you can only receive messages from chats you're connected to. Imagine getting all messages from a 100k viewers streamer!
+
+## Clips
+To get a clip, you only need to call `JTABot#getClipBySlug(String)` and you have your clip.
+```java
+public static void main(String[] args) {
+    // Create the bot
+    JTABot bot = JTABotBuilder.create(clientId, clientSecret);
+    
+    // Get the clip
+    Clip clip = bot.getClipBySlug("EnticingCorrectDelicataDansGame-ZjHJQXu6ob2R-j19");
+    
+    // Print the clip information
+    System.out.println("Clip '" + clip.getSlug() + "': " + clip.getTitle());
+}
+```
