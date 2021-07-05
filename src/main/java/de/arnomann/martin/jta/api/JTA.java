@@ -8,6 +8,8 @@ import okhttp3.OkHttpClient;
  */
 public class JTA {
 
+    public static final String version = "0.1.1-beta";
+
     /**
      * Client used for HTTP-Requests.
      */

@@ -24,6 +24,12 @@ public interface Clip {
     User getCreator();
 
     /**
+     * Returns the channel in which the clip was created.
+     * @return the channel.
+     */
+    User getChannel();
+
+    /**
      * Returns the URL of the clip.
      *
      * @return the URL.

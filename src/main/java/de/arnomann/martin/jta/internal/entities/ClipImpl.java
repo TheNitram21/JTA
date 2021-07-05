@@ -11,11 +11,13 @@ public class ClipImpl implements Clip, JTAClass {
     private final JTABot bot;
     private final JSONObject json;
     private final User creator;
+    private final User channel;
 
-    public ClipImpl(JTABot bot, JSONObject json, User creator) {
+    public ClipImpl(JTABot bot, JSONObject json, User creator, User channel) {
         this.bot = bot;
         this.json = json;
         this.creator = creator;
+        this.channel = channel;
     }
 
     @Override
@@ -31,6 +33,11 @@ public class ClipImpl implements Clip, JTAClass {
     @Override
     public User getCreator() {
         return creator;
+    }
+
+    @Override
+    public User getChannel() {
+        return channel;
     }
 
     @Override

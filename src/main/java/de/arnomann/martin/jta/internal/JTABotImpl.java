@@ -137,7 +137,8 @@ public class JTABotImpl implements JTABot {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/clips/" + slug, null, headers);
         try {
             JSONObject json = new JSONObject(response.body().string());
-            return new ClipImpl(this, json, getUserByName(json.getJSONObject("curator").getString("name")));
+            return new ClipImpl(this, json, getUserByName(json.getJSONObject("curator").getString("name")),
+                    getUserByName(json.getJSONObject("broadcaster").getString("name")));
         } catch (JSONException | IOException e) {
             JTA.getLogger().error(Helpers.format("No results: No clip with slug {} found.", slug));
         }
