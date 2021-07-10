@@ -2,10 +2,14 @@
 A Java Wrapper for the Twitch API. **The API is in development currently, so there can be a lot of problems.**
 
 ## Summary
-1. [Building your first Bot](#building-your-first-bot)
-2. [Sending Messages](#sending-messages)
-3. [Events](#events)
-4. [Clips](#clips)
+1. [Download](#download)
+2. [Building your first Bot](#building-your-first-bot)
+3. [Sending Messages](#sending-messages)
+4. [Events](#events)
+5. [Clips](#clips)
+
+## Download
+Currently, to get the API, you need to go to [JitPack](https://jitpack.io/#NitramMann21/JTA) and get the dependency there. In the future, I want to switch to another maven repository.
 
 ## Building your first Bot
 First of all, go to the [Twitch Developer Console](https://dev.twitch.tv/console/apps) and create an application. **2FA (Two Factor Authentication) has to be enabled for that.** Then you can start coding.
