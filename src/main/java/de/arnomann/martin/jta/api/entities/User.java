@@ -34,4 +34,10 @@ public interface User extends Updatable {
      */
     UpdateAction<Stream> getStream();
 
+    /**
+     * Returns the bio of the user.
+     * @return the bio.
+     */
+    UpdateAction<String> getBio();
+
 }

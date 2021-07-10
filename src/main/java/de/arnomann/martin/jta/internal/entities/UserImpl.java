@@ -59,7 +59,6 @@ public class UserImpl implements User, JTAClass {
 
     @Override
     public UpdateAction<Boolean> isLive() {
-        update();
         return new UpdateAction<>(this, () -> json.getBoolean("is_live"));
     }
 
@@ -92,6 +91,11 @@ public class UserImpl implements User, JTAClass {
                 throw new JTAException("Error while trying to read stream JSON");
             }
         });
+    }
+
+    @Override
+    public UpdateAction<String> getBio() {
+        return new UpdateAction<String>(this, () -> json.getString("bio"));
     }
 
 }
