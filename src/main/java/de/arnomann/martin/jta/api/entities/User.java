@@ -40,4 +40,10 @@ public interface User extends Updatable {
      */
     UpdateAction<String> getBio();
 
+    /**
+     * Returns if the user is a partner.
+     * @return if the user is a partner.
+     */
+    UpdateAction<Boolean> isPartner();
+
 }

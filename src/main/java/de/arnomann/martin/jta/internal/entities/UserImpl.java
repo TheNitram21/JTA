@@ -95,7 +95,11 @@ public class UserImpl implements User, JTAClass {
 
     @Override
     public UpdateAction<String> getBio() {
-        return new UpdateAction<String>(this, () -> json.getString("bio"));
+        return new UpdateAction<>(this, () -> json.getString("bio"));
     }
 
+    @Override
+    public UpdateAction<Boolean> isPartner() {
+        return new UpdateAction<>(this, () -> json.getBoolean("partnered"));
+    }
 }
