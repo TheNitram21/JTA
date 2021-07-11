@@ -6,12 +6,12 @@ import okhttp3.OkHttpClient;
 /**
  * Main class of the API.
  */
-public class JTA {
+public final class JTA {
 
     /**
      * The current version of the API.
      */
-    public static final String version = "0.1.1_4";
+    public static final String version = "1.0.0_5";
 
     /**
      * Client used for HTTP-Requests.
