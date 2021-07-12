@@ -14,12 +14,14 @@ public class JTATest {
 
     public static User nitram;
 
+    public static JTABot bot;
+
     public static final String chatOAuth = "oauth:2tpc7vmegc0k3m4anh06wfvew30rmk";
 
     public static void main(String[] args) {
         JTA.initialize();
 
-        JTABot bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3");
+        bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3");
 
         l = new Logger();
 
@@ -27,9 +29,9 @@ public class JTATest {
 
         nitram = bot.getUserByName("TheNitram21");
 
-        System.out.println(nitram.isLive().queue());
+        System.out.println("Ich bin" + (nitram.getChannel().isLive().queue() ? " " : " nicht ") + "live.");
 
-        Chat nitramChat = nitram.getChat();
+        Chat nitramChat = nitram.getChannel().getChat();
 
         try {
             nitramChat.connect("oauth:2tpc7vmegc0k3m4anh06wfvew30rmk", false);

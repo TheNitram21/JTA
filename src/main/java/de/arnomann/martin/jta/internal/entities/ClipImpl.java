@@ -3,10 +3,9 @@ package de.arnomann.martin.jta.internal.entities;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Clip;
 import de.arnomann.martin.jta.api.entities.User;
-import de.arnomann.martin.jta.internal.JTAClass;
 import org.json.JSONObject;
 
-public class ClipImpl implements Clip, JTAClass {
+public class ClipImpl implements Clip {
 
     private final JTABot bot;
     private final JSONObject json;

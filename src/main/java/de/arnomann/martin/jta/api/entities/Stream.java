@@ -8,10 +8,10 @@ import de.arnomann.martin.jta.api.requests.UpdateAction;
 public interface Stream extends Updatable {
 
     /**
-     * Returns the streaming user.
+     * Returns the streaming channel.
      * @return the streamer.
      */
-    User getUser();
+    Channel getChannel();
 
     /**
      * Returns the viewer count.

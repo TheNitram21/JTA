@@ -2,11 +2,11 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
+import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.Stream;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.EntityUtils;
-import de.arnomann.martin.jta.internal.JTAClass;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.api.entities.User;
@@ -19,12 +19,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class UserImpl implements User, JTAClass {
+public class UserImpl implements User {
 
     private final JTABot bot;
     private JSONObject json;
     private final String name;
-    private MessageSenderBot msgbot;
 
     public UserImpl(JSONObject json, JTABot bot) {
         this.bot = bot;
@@ -34,6 +33,39 @@ public class UserImpl implements User, JTAClass {
 
     @Override
     public void update() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/vnd.twitchtv.v5+json");
+        headers.put("Client-ID", bot.getClientId());
+
+        String nameToSearch = EntityUtils.userNameToId(this);
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/users?login=" + nameToSearch, null, headers);
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+            JSONArray jsonArrayData = json.getJSONArray("users");
+            if(jsonArrayData.getJSONObject(0).getString("display_name").equals(getName())) {
+                this.json = jsonArrayData.getJSONObject(0);
+            }
+        } catch (JSONException | IOException e) { throw new JTAException("Can't fetch user.", e); }
+    }
+
+    @Override
+    public long getId() {
+        return json.getLong("id");
+    }
+
+    @Override
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public UpdateAction<String> getBio() {
+        return new UpdateAction<>(this, () -> json.getString("bio"));
+    }
+
+    @Override
+    public Channel getChannel() {
         Map<String, String> headers = new HashMap<>();
         headers.put("client-id", bot.getClientId());
         headers.put("Authorization", "Bearer " + bot.getToken());
@@ -46,60 +78,10 @@ public class UserImpl implements User, JTAClass {
             JSONArray jsonArrayData = json.getJSONArray("data");
             for (Object object : jsonArrayData) {
                 if(((JSONObject) object).getString("display_name").equals(getName())) {
-                    this.json = (JSONObject) object;
+                    return new ChannelImpl(bot, this, (JSONObject) object);
                 }
             }
-        } catch (JSONException | IOException e) { System.err.println("Couldn't update user."); }
-    }
-
-    @Override
-    public long getId() {
-        return json.getLong("id");
-    }
-
-    @Override
-    public UpdateAction<Boolean> isLive() {
-        return new UpdateAction<>(this, () -> json.getBoolean("is_live"));
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public ChatImpl getChat() {
-        return new ChatImpl(this, bot);
-    }
-
-    @Override
-    public UpdateAction<Stream> getStream() {
-        return new UpdateAction<>(this, () -> {
-            if (!isLive().queue())
-                throw new JTAException(Helpers.format("User {} is not live!", getName()));
-
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Accept", "application/vnd.twitchtv.v5+json");
-            headers.put("Client-ID", bot.getClientId());
-
-            Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + getId(), null, headers);
-
-            try {
-                JSONObject json = new JSONObject(respone.body().string());
-                return new StreamImpl(bot, this, json.getJSONObject("stream"));
-            } catch (IOException e) {
-                throw new JTAException("Error while trying to read stream JSON");
-            }
-        });
-    }
-
-    @Override
-    public UpdateAction<String> getBio() {
-        return new UpdateAction<>(this, () -> json.getString("bio"));
-    }
-
-    @Override
-    public UpdateAction<Boolean> isPartner() {
-        return new UpdateAction<>(this, () -> json.getBoolean("partnered"));
+        } catch (JSONException | IOException e) { JTA.getLogger().error("Couldn't fetch channel of user " + getName()); }
+        return null;
     }
 }

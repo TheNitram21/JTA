@@ -28,7 +28,7 @@ public static void main(String[] args) {
 This creates a bot instance, however, you see the two Strings. To make it work, you need to replace them. Replace `CLIENTID` with your client id and `CLIENTSECRET` with your client secret.
 
 ## Sending Messages
-To send a message, you first need to get the chat of a user. Then connect to the chat. Now you can send the message.
+To send a message, you first need to get the chat of a user's channel. Then connect to the chat. Now you can send the message.
 ```java
 public static void main(String[] args) {
   // Initialize the library.
@@ -40,8 +40,8 @@ public static void main(String[] args) {
   // Get the user. In this case, I chose myself.
   User user = bot.getUserByName("TheNitram21");
   
-  // Get the chat of the user.
-  Chat chat = user.getChat();
+  // Get the chat of the user's channel.
+  Chat chat = user.getChannel().getChat();
   
   try {
     // Connect to the chat.
@@ -76,7 +76,7 @@ public static void main(String[] args) {
   User user = bot.getUserByName("TheNitram21");
   
   // Get the chat of the user.
-  Chat chat = user.getChat();
+  Chat chat = user.getChannel().getChat();
   
   try {
     // Connect to the chat.

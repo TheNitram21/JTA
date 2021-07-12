@@ -11,28 +11,10 @@ public interface User extends Updatable {
     long getId();
 
     /**
-     * Checks, whether the user is live or not.
-     * @return whether the user is live or not.
-     */
-    UpdateAction<Boolean> isLive();
-
-    /**
      * Gets the name of the user.
      * @return the name of the user.
      */
     String getName();
-
-    /**
-     * Returns the chat of the user.
-     * @return the chat.
-     */
-    Chat getChat();
-
-    /**
-     * Returns the current live stream of this user.
-     * @return the stream.
-     */
-    UpdateAction<Stream> getStream();
 
     /**
      * Returns the bio of the user.
@@ -41,9 +23,9 @@ public interface User extends Updatable {
     UpdateAction<String> getBio();
 
     /**
-     * Returns if the user is a partner.
-     * @return if the user is a partner.
+     * Returns the channel of the user.
+     * @return the channel.
      */
-    UpdateAction<Boolean> isPartner();
+    Channel getChannel();
 
 }

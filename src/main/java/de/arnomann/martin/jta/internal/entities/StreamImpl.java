@@ -1,14 +1,13 @@
 package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTABot;
+import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.Game;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.api.entities.Stream;
-import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
-import de.arnomann.martin.jta.internal.JTAClass;
 import okhttp3.Response;
 import org.json.JSONObject;
 
@@ -16,20 +15,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StreamImpl implements Stream, JTAClass {
+public class StreamImpl implements Stream {
     
     private final JTABot bot;
-    private final UserImpl streamer;
+    private final ChannelImpl streamer;
     private JSONObject json;
     
-    public StreamImpl(JTABot bot, UserImpl streamer, JSONObject json) {
+    public StreamImpl(JTABot bot, ChannelImpl streamer, JSONObject json) {
         this.bot = bot;
         this.streamer = streamer;
         this.json = json;
     }
     
     @Override
-    public User getUser() {
+    public Channel getChannel() {
         return streamer;
     }
 
@@ -41,13 +40,13 @@ public class StreamImpl implements Stream, JTAClass {
     @Override
     public void update() {
         if(!streamer.isLive().queue())
-            throw new JTAException(Helpers.format("User {} has gone offline!", streamer.getName()));
+            throw new JTAException(Helpers.format("User {} has gone offline!", streamer.getUser().getName()));
 
         Map<String, String> headers = new HashMap<>();
         headers.put("Accept", "application/vnd.twitchtv.v5+json");
         headers.put("Client-ID", bot.getClientId());
 
-        Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getId(), null, headers);
+        Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), null, headers);
 
         try {
             JSONObject json = new JSONObject(respone.body().string());

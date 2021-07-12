@@ -3,6 +3,7 @@ package de.arnomann.martin.jta.internal;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.events.Listener;
+import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.entities.ClipImpl;
 import de.arnomann.martin.jta.internal.entities.UserImpl;
@@ -64,23 +65,19 @@ public class JTABotImpl implements JTABot {
     @Override
     public UserImpl getUserByName(String name) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("client-id", getClientId());
-        headers.put("Authorization", "Bearer " + getToken());
+        headers.put("Accept", "application/vnd.twitchtv.v5+json");
+        headers.put("Client-ID", getClientId());
 
         String nameToSearch = EntityUtils.userNameToId(name);
 
-        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/users?login=" + nameToSearch, null, headers);
         try {
             JSONObject json = new JSONObject(response.body().string());
-            JSONArray jsonArrayData = json.getJSONArray("data");
-            for (Object object : jsonArrayData) {
-                if (((JSONObject) object).getString("broadcaster_login").equals(nameToSearch)) {
-                    return new UserImpl((JSONObject) object, this);
-                }
+            JSONArray jsonArrayData = json.getJSONArray("users");
+            if(jsonArrayData.getJSONObject(0).getString("display_name").equals(name)) {
+                return new UserImpl(jsonArrayData.getJSONObject(0), this);
             }
-        } catch (JSONException | IOException e) {
-            JTA.getLogger().error(Helpers.format("No results: No user with name {} found.", name));
-        }
+        } catch (JSONException | IOException e) { throw new JTAException("Can't fetch user.", e); }
         return null;
     }
 

@@ -19,7 +19,7 @@ public class MessageReceivedEvent extends Event {
 
     @Override
     public String toString() {
-        return Helpers.format("[{} | #{}]: {}", getMessage().getSender().getName(), getMessage().getChannel().getUser().getName(),
+        return Helpers.format("[{} | #{}]: {}", getMessage().getSender().getName(), getMessage().getChannel().getChannel().getUser().getName(),
                 getMessage().getContent());
     }
 }

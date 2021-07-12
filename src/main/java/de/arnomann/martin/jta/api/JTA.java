@@ -11,7 +11,7 @@ public final class JTA {
     /**
      * The current version of the API.
      */
-    public static final String version = "1.0.0_5";
+    public static final String version = "1.0.1_6";
 
     /**
      * Client used for HTTP-Requests.

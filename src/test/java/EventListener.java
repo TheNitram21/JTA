@@ -12,13 +12,14 @@ public class EventListener implements Listener {
         try {
             event.getMessage().getChannel().connect(JTATest.chatOAuth, false);
 
-            System.out.println(event.toString());
+            System.out.println(event);
 
             if (event.getMessage().getContent().equals("!stop")) {
                 System.out.println("Should stop");
                 Chat c = event.getMessage().getChannel();
                 c.sendMessage("Stopping...");
                 c.disconnect();
+                JTATest.bot.stop();
             }
         } catch (IrcException | InterruptedException | IOException e) {
             e.printStackTrace();

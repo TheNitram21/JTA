@@ -4,9 +4,8 @@ import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Chat;
 import de.arnomann.martin.jta.api.entities.Message;
 import de.arnomann.martin.jta.api.entities.User;
-import de.arnomann.martin.jta.internal.JTAClass;
 
-public class MessageImpl implements Message, JTAClass {
+public class MessageImpl implements Message {
 
     private final JTABot bot;
     private final String content;

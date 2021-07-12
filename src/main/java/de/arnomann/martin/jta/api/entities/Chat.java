@@ -30,10 +30,10 @@ public interface Chat {
     void disconnect() throws InterruptedException;
 
     /**
-     * Returns the chat's user.
-     * @return the user.
+     * Returns the chat's channel.
+     * @return the channel.
      */
-    User getUser();
+    Channel getChannel();
 
     /**
      * Clears the chat.
