@@ -3,12 +3,13 @@ package de.arnomann.martin.jta.internal.entities;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
-import de.arnomann.martin.jta.api.entities.Chat;
 import de.arnomann.martin.jta.api.entities.Stream;
 import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
+import de.arnomann.martin.jta.internal.util.Helpers;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +38,23 @@ public class ChannelImpl implements Channel {
 
     @Override
     public UpdateAction<Stream> getStream() {
-        return null;
+        return new UpdateAction<>(this, () -> {
+            if (!isLive().queue())
+                throw new JTAException(Helpers.format("Channel {} is not live!", getUser().getName()));
+
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Accept", "application/vnd.twitchtv.v5+json");
+            headers.put("Client-ID", bot.getClientId());
+
+            Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), null, headers);
+
+            try {
+                JSONObject json = new JSONObject(respone.body().string());
+                return new StreamImpl(bot, this, json.getJSONObject("stream"));
+            } catch (IOException e) {
+                throw new JTAException("Error while trying to read stream JSON");
+            }
+        });
     }
 
     @Override
