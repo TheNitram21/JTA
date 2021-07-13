@@ -22,6 +22,7 @@ public class JTATest {
         JTA.initialize();
 
         bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3");
+        bot.setChatOAuthToken(chatOAuth);
 
         l = new Logger();
 
