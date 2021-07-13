@@ -67,4 +67,9 @@ public class StreamImpl implements Stream {
         });
     }
 
+    @Override
+    public long getId() {
+        return json.getLong("_id");
+    }
+
 }

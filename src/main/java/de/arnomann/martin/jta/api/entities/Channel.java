@@ -2,7 +2,7 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
-public interface Channel extends Updatable {
+public interface Channel extends Updatable, IDable {
 
     /**
      * Returns the chat of the user.
@@ -27,4 +27,11 @@ public interface Channel extends Updatable {
      * @return the user.
      */
     User getUser();
+
+    /**
+     * Returns the count of followers of the user.
+     * @return the follower count.
+     */
+    UpdateAction<Long> getFollowerCount();
+
 }

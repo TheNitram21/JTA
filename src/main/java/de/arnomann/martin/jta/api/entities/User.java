@@ -2,13 +2,7 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
-public interface User extends Updatable {
-
-    /**
-     * Gets the id of the user as long.
-     * @return the id.
-     */
-    long getId();
+public interface User extends Updatable, IDable {
 
     /**
      * Gets the name of the user.

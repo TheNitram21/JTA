@@ -41,6 +41,8 @@ public class JTATest {
             e.printStackTrace();
         }
 
+        System.out.println(nitram.getChannel().getFollowerCount().queue());
+
         System.out.println(bot.getClipBySlug("EnticingCorrectDelicataDansGame-ZjHJQXu6ob2R-j19").getTitle());
 
         l.info("Started bot.");

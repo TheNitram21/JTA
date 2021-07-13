@@ -5,7 +5,7 @@ import de.arnomann.martin.jta.api.requests.UpdateAction;
 /**
  * Represents a live stream.
  */
-public interface Stream extends Updatable {
+public interface Stream extends Updatable, IDable {
 
     /**
      * Returns the streaming channel.

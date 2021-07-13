@@ -52,7 +52,7 @@ public class ChannelImpl implements Channel {
                 JSONObject json = new JSONObject(respone.body().string());
                 return new StreamImpl(bot, this, json.getJSONObject("stream"));
             } catch (IOException e) {
-                throw new JTAException("Error while trying to read stream JSON");
+                throw new JTAException("Error while trying to read stream JSON.", e);
             }
         });
     }
@@ -65,6 +65,24 @@ public class ChannelImpl implements Channel {
     @Override
     public User getUser() {
         return user;
+    }
+
+    @Override
+    public UpdateAction<Long> getFollowerCount() {
+        return new UpdateAction<>(this, () -> {
+            Map<String, String> headers = new HashMap<>();
+            headers.put("Accept", "application/vnd.twitchtv.v5+json");
+            headers.put("Client-ID", bot.getClientId());
+
+            Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() + "/follows", null, headers);
+
+            try {
+                JSONObject json = new JSONObject(response.body().string());
+                return json.getLong("_total");
+            } catch (IOException e) {
+                throw new JTAException("Error while trying to read JSON of followers.", e);
+            }
+        });
     }
 
     @Override
@@ -86,4 +104,10 @@ public class ChannelImpl implements Channel {
             }
         } catch (JSONException | IOException e) { System.err.println("Couldn't update channel."); }
     }
+
+    @Override
+    public long getId() {
+        return json.getLong("id");
+    }
+
 }
