@@ -1,5 +1,6 @@
 package de.arnomann.martin.jta.internal.entities;
 
+import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
@@ -39,10 +40,10 @@ public class UserImpl implements User {
 
         String nameToSearch = EntityUtils.userNameToId(this);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/users?login=" + nameToSearch, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, headers);
         try {
             JSONObject json = new JSONObject(response.body().string());
-            JSONArray jsonArrayData = json.getJSONArray("users");
+            JSONArray jsonArrayData = json.getJSONArray("ta");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(getName())) {
                 this.json = jsonArrayData.getJSONObject(0);
             }
@@ -57,11 +58,6 @@ public class UserImpl implements User {
     @Override
     public String getName() {
         return name;
-    }
-
-    @Override
-    public UpdateAction<String> getBio() {
-        return new UpdateAction<>(this, () -> json.getString("bio"));
     }
 
     @Override
@@ -83,5 +79,10 @@ public class UserImpl implements User {
             }
         } catch (JSONException | IOException e) { JTA.getLogger().error("Couldn't fetch channel of user " + getName()); }
         return null;
+    }
+
+    @Override
+    public UpdateAction<BroadcasterType> getBroadcasterType() {
+        return new UpdateAction<>(this, () -> BroadcasterType.getByString(json.getString("broadcaster_type")));
     }
 }

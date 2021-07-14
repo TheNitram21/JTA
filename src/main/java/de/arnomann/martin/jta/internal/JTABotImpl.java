@@ -70,10 +70,10 @@ public class JTABotImpl implements JTABot {
 
         String nameToSearch = EntityUtils.userNameToId(name);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/users?login=" + nameToSearch, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, headers);
         try {
             JSONObject json = new JSONObject(response.body().string());
-            JSONArray jsonArrayData = json.getJSONArray("users");
+            JSONArray jsonArrayData = json.getJSONArray("data");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(name)) {
                 return new UserImpl(jsonArrayData.getJSONObject(0), this);
             }
@@ -131,7 +131,7 @@ public class JTABotImpl implements JTABot {
         headers.put("Accept", "application/vnd.twitchtv.v5+json");
         headers.put("Client-ID", getClientId());
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/clips/" + slug, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/clips?id=" + slug, null, headers);
         try {
             JSONObject json = new JSONObject(response.body().string());
             return new ClipImpl(this, json, getUserByName(json.getJSONObject("curator").getString("name")),
