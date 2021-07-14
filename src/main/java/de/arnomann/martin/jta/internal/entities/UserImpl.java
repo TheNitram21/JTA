@@ -35,8 +35,8 @@ public class UserImpl implements User {
     @Override
     public void update() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "application/vnd.twitchtv.v5+json");
         headers.put("Client-ID", bot.getClientId());
+        headers.put("Authorization", "Bearer " + bot.getToken());
 
         String nameToSearch = EntityUtils.userNameToId(this);
 
@@ -63,7 +63,7 @@ public class UserImpl implements User {
     @Override
     public Channel getChannel() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("client-id", bot.getClientId());
+        headers.put("Client-ID", bot.getClientId());
         headers.put("Authorization", "Bearer " + bot.getToken());
 
         String nameToSearch = EntityUtils.userNameToId(this);

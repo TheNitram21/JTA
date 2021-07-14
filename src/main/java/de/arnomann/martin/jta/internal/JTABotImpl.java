@@ -65,8 +65,8 @@ public class JTABotImpl implements JTABot {
     @Override
     public UserImpl getUserByName(String name) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "application/vnd.twitchtv.v5+json");
         headers.put("Client-ID", getClientId());
+        headers.put("Authorization", "Bearer " + getToken());
 
         String nameToSearch = EntityUtils.userNameToId(name);
 
@@ -84,7 +84,7 @@ public class JTABotImpl implements JTABot {
     @Override
     public UserImpl getUserById(long id) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("client-id", getClientId());
+        headers.put("Client-ID", getClientId());
         headers.put("Authorization", "Bearer " + getToken());
 
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/search/channels/" + id, null, headers);
@@ -128,8 +128,8 @@ public class JTABotImpl implements JTABot {
     @Override
     public ClipImpl getClipBySlug(String slug) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "application/vnd.twitchtv.v5+json");
         headers.put("Client-ID", getClientId());
+        headers.put("Authorization", "Bearer " + getToken());
 
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/clips?id=" + slug, null, headers);
         try {

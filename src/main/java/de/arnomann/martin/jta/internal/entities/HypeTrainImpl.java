@@ -50,8 +50,8 @@ public class HypeTrainImpl implements HypeTrain {
     @Override
     public void update() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
         headers.put("Client-ID", bot.getClientId());
+        headers.put("Authorization", "Bearer " + bot.getToken());
 
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=" + getChannel()
                         .getUser().getId(), null, headers);

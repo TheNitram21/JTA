@@ -43,8 +43,8 @@ public class StreamImpl implements Stream {
             throw new JTAException(Helpers.format("User {} has gone offline!", streamer.getUser().getName()));
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "application/vnd.twitchtv.v5+json");
         headers.put("Client-ID", bot.getClientId());
+        headers.put("Authorization", "Bearer " + bot.getToken());
 
         Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), null, headers);
 

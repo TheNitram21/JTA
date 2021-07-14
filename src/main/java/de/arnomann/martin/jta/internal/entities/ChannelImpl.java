@@ -44,8 +44,8 @@ public class ChannelImpl implements Channel {
                 throw new JTAException(Helpers.format("Channel {} is not live!", getUser().getName()));
 
             Map<String, String> headers = new HashMap<>();
-            headers.put("Accept", "application/vnd.twitchtv.v5+json");
             headers.put("Client-ID", bot.getClientId());
+            headers.put("Authorization", "Bearer " + bot.getToken());
 
             Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), null, headers);
 
@@ -71,8 +71,8 @@ public class ChannelImpl implements Channel {
     @Override
     public long getFollowerCount() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Accept", "application/vnd.twitchtv.v5+json");
         headers.put("Client-ID", bot.getClientId());
+        headers.put("Authorization", "Bearer " + bot.getToken());
 
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() + "/follows", null, headers);
 
@@ -104,7 +104,7 @@ public class ChannelImpl implements Channel {
     @Override
     public void update() {
         Map<String, String> headers = new HashMap<>();
-        headers.put("client-id", bot.getClientId());
+        headers.put("Client-ID", bot.getClientId());
         headers.put("Authorization", "Bearer " + bot.getToken());
 
         String nameToSearch = EntityUtils.userNameToId(user);
