@@ -1,5 +1,5 @@
 # JTA (Java Twitch API)
-A Java Wrapper for the Twitch API. **The API is in development currently, so there can be a lot of problems.**
+A Java Wrapper for the Twitch API.
 
 ## Summary
 1. [Download](#download)
@@ -7,6 +7,7 @@ A Java Wrapper for the Twitch API. **The API is in development currently, so the
 3. [Sending Messages](#sending-messages)
 4. [Events](#events)
 5. [Clips](#clips)
+6. [Contributing](#contributing)
 
 ## Download
 Currently, to get the API, you need to go to [JitPack](https://jitpack.io/#NitramMann21/JTA) and get the dependency there. In the future, I may switch to another maven repository.
@@ -113,3 +114,6 @@ public static void main(String[] args) {
     System.out.println("Clip '" + clip.getSlug() + "': " + clip.getTitle());
 }
 ```
+
+## Contributing
+You can find a detailed manual for how to contribute [here](https://www.github.com/NitramMann21/JTA/blob/development/CONTRIBUTING.md).
