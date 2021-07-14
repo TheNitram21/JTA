@@ -3,6 +3,7 @@ package de.arnomann.martin.jta.internal.entities;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
+import de.arnomann.martin.jta.api.entities.HypeTrain;
 import de.arnomann.martin.jta.api.entities.Stream;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
@@ -68,21 +69,36 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public UpdateAction<Long> getFollowerCount() {
-        return new UpdateAction<>(this, () -> {
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Accept", "application/vnd.twitchtv.v5+json");
-            headers.put("Client-ID", bot.getClientId());
+    public long getFollowerCount() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Accept", "application/vnd.twitchtv.v5+json");
+        headers.put("Client-ID", bot.getClientId());
 
-            Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() + "/follows", null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() + "/follows", null, headers);
 
-            try {
-                JSONObject json = new JSONObject(response.body().string());
-                return json.getLong("_total");
-            } catch (IOException e) {
-                throw new JTAException("Error while trying to read JSON of followers.", e);
-            }
-        });
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+            return json.getLong("_total");
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of followers.", e);
+        }
+    }
+
+    @Override
+    public HypeTrain getHypeTrain() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + bot.getToken());
+        headers.put("Client-ID", bot.getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=" + getUser().getId(),
+                null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string()).getJSONArray("data").getJSONObject(0);
+            return new HypeTrainImpl(bot, this, json);
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of hype train.", e);
+        }
     }
 
     @Override

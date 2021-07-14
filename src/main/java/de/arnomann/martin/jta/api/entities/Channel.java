@@ -5,20 +5,20 @@ import de.arnomann.martin.jta.api.requests.UpdateAction;
 public interface Channel extends Updatable, IDable {
 
     /**
-     * Returns the chat of the user.
+     * Returns the chat of the channel.
      * @return the chat.
      */
     Chat getChat();
 
     /**
-     * Returns the current live stream of this user.
+     * Returns the current live stream of this channel.
      * @return the stream.
      */
     UpdateAction<Stream> getStream();
 
     /**
-     * Checks, whether the user is live or not.
-     * @return whether the user is live or not.
+     * Checks, whether the channel is live or not.
+     * @return whether the channel is live or not.
      */
     UpdateAction<Boolean> isLive();
 
@@ -29,9 +29,15 @@ public interface Channel extends Updatable, IDable {
     User getUser();
 
     /**
-     * Returns the count of followers of the user.
+     * Returns the count of followers of the channel.
      * @return the follower count.
      */
-    UpdateAction<Long> getFollowerCount();
+    long getFollowerCount();
+
+    /**
+     * Returns the most recent hype train.
+     * @return the hype train.
+     */
+    HypeTrain getHypeTrain();
 
 }
