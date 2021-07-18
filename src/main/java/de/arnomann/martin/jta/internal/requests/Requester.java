@@ -5,6 +5,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.Map;
@@ -21,18 +22,55 @@ public final class Requester {
         this(JTA.getClient());
     }
 
-    @SafeVarargs
-    public final Response request(String url, RequestBody body, Map<String, String>... headers) {
+    public Response request(String url, RequestBody body, Map<String, String> headers) {
         Request.Builder requestBuilder = new Request.Builder().url(url);
 
-        for (Map<String, String> map : headers) {
-            map.forEach(requestBuilder::addHeader);
-        }
+        if(headers != null)
+            headers.forEach(requestBuilder::addHeader);
 
         if(body != null)
             requestBuilder.post(body);
         else
             requestBuilder.get();
+
+        Request request = requestBuilder.build();
+
+        try {
+            return client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Response delete(String url, RequestBody body, Map<String, String> headers) {
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+
+        if(headers != null)
+            headers.forEach(requestBuilder::addHeader);
+
+        if(body != null)
+            requestBuilder.delete(body);
+        else
+            requestBuilder.delete();
+
+        Request request = requestBuilder.build();
+
+        try {
+            return client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Response patch(String url, @NotNull RequestBody body, Map<String, String> headers) {
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+
+        if(headers != null)
+            headers.forEach(requestBuilder::addHeader);
+
+        requestBuilder.patch(body);
 
         Request request = requestBuilder.build();
 

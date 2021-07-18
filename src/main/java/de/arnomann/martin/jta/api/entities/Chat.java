@@ -1,7 +1,7 @@
 package de.arnomann.martin.jta.api.entities;
 
 import org.jibble.pircbot.IrcException;
-import org.jibble.pircbot.NickAlreadyInUseException;
+import de.arnomann.martin.jta.api.JTABot;
 
 import java.io.IOException;
 
@@ -13,9 +13,16 @@ public interface Chat {
      * @param console Whether there should be console output or not. Should be deactivated in big chats.
      * @throws IrcException If the connection failed.
      * @throws IOException If the bot is already connected.
-     * @throws NickAlreadyInUseException If the nick name is already in use.
      */
-    void connect(String oauth, boolean console) throws NickAlreadyInUseException, IOException, IrcException;
+    void connect(String oauth, boolean console) throws IOException, IrcException;
+
+    /**
+     * Connects to the chat using the default OAuth token (set using {@link JTABot#setChatOAuthToken(String)}).
+     * @param console Whether there should be console output or not. Should be deactivated in big chats.
+     * @throws IrcException If the connection failed.
+     * @throws IOException If the bot is already connected.
+     */
+    void connect(boolean console) throws IOException, IrcException;
 
     /**
      * Sends a message to the chat.

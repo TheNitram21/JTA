@@ -33,6 +33,11 @@ public class ChatImpl implements Chat {
     }
 
     @Override
+    public void connect(boolean console) throws IOException, IrcException {
+        this.connect(bot.getChatOAuthToken(), console);
+    }
+
+    @Override
     public ChatImpl sendMessage(String msg) {
         if(!isConnected) throw new JTAException("Not connected to chat!");
         msgbot.sendMessage("#" + EntityUtils.userNameToId(channel.getUser()), msg);

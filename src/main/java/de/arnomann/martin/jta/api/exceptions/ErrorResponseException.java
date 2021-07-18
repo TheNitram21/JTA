@@ -13,6 +13,11 @@ public class ErrorResponseException extends JTAException {
 
     @Override
     public void printStackTrace() {
-        JTA.getLogger().error(getMessage() + "\n" + errorResponse.toString());
+        JTA.getLogger().error("ERROR RESPONSE: " + errorResponse.getCode() + " " + errorResponse.getError() + " - " + errorResponse.getMessage());
     }
+
+    public ErrorResponse getErrorResponse() {
+        return errorResponse;
+    }
+
 }

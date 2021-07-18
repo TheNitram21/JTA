@@ -4,6 +4,8 @@ import de.arnomann.martin.jta.api.entities.Clip;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.events.Listener;
 
+import java.util.EnumSet;
+
 /**
  * A bot.
  */
@@ -90,5 +92,17 @@ public interface JTABot {
      * @return the clip. <code>null</code>, if no clip was found.
      */
     Clip getClipBySlug(String slug);
+
+    /**
+     * Adds permissions to the needed permissions.
+     * @param permissions the permission to add.
+     */
+    void addNeededPermissions(EnumSet<Permission> permissions);
+
+    /**
+     * Removes permissions to the needed permissions.
+     * @param permissions the permission to remove.
+     */
+    void removeNeededPermissions(EnumSet<Permission> permissions);
 
 }

@@ -3,11 +3,14 @@ package de.arnomann.martin.jta.internal.entities;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.Game;
+import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
+import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.api.entities.Stream;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
+import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
 import org.json.JSONObject;
 
@@ -46,13 +49,17 @@ public class StreamImpl implements Stream {
         headers.put("Client-ID", bot.getClientId());
         headers.put("Authorization", "Bearer " + bot.getToken());
 
-        Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), null, headers);
+        Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), null, headers);
 
         try {
-            JSONObject json = new JSONObject(respone.body().string());
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
             this.json = json.getJSONObject("stream");
         } catch (IOException e) {
-            throw new JTAException("Error while trying to read stream JSON");
+            throw new JTAException("Error while trying to read JSON of stream.", e);
         }
     }
 

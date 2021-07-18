@@ -1,5 +1,6 @@
 package de.arnomann.martin.jta.api;
 
+import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.util.Checks;
 import okhttp3.OkHttpClient;
 
@@ -11,7 +12,7 @@ public final class JTA {
     /**
      * The current version of the API.
      */
-    public static final String version = "1.1.1_8";
+    public static final String VERSION = "1.2.0_9";
 
     /**
      * Client used for HTTP-Requests.
@@ -40,13 +41,18 @@ public final class JTA {
 
         logger = new Logger();
 
-        initialized = true;
+        Thread.setDefaultUncaughtExceptionHandler((t, e) -> {
+            if (e instanceof ErrorResponseException) ((ErrorResponseException) e).printStackTrace();
+            else e.printStackTrace();
+        });
 
         logger.info("Successfully initialized JTA.");
+
+        initialized = true;
     }
 
     /**
-     * Checks if the API was inizialized
+     * Checks if the API was initialized
      * @return <code>true</code> if {@link JTA#initialize()} was called before, otherwise false.
      */
     public static boolean isInitialized() {

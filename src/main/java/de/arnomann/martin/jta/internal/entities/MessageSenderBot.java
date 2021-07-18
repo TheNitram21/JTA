@@ -14,8 +14,8 @@ import java.io.IOException;
 
 public class MessageSenderBot extends PircBot {
 
-    private JTABot bot;
-    private Channel channel;
+    private final JTABot bot;
+    private final Channel channel;
 
     MessageSenderBot(String name, JTABot bot, Channel channel) {
         this.setName(name);

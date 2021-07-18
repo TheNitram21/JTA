@@ -2,22 +2,26 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.Channel;
-import de.arnomann.martin.jta.api.entities.HypeTrain;
-import de.arnomann.martin.jta.api.entities.Stream;
-import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.entities.*;
+import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
+import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
+import de.arnomann.martin.jta.internal.util.ResponseUtils;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChannelImpl implements Channel {
@@ -47,10 +51,14 @@ public class ChannelImpl implements Channel {
             headers.put("Client-ID", bot.getClientId());
             headers.put("Authorization", "Bearer " + bot.getToken());
 
-            Response respone = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), null, headers);
+            Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), null, headers);
 
             try {
-                JSONObject json = new JSONObject(respone.body().string());
+                JSONObject json = new JSONObject(response.body().string());
+
+                if(ResponseUtils.isErrorResponse(json))
+                    throw new ErrorResponseException(new ErrorResponse(json));
+
                 return new StreamImpl(bot, this, json.getJSONObject("stream"));
             } catch (IOException e) {
                 throw new JTAException("Error while trying to read stream JSON.", e);
@@ -78,6 +86,10 @@ public class ChannelImpl implements Channel {
 
         try {
             JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
             return json.getLong("_total");
         } catch (IOException e) {
             throw new JTAException("Error while trying to read JSON of followers.", e);
@@ -95,6 +107,10 @@ public class ChannelImpl implements Channel {
 
         try {
             JSONObject json = new JSONObject(response.body().string()).getJSONArray("data").getJSONObject(0);
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
             return new HypeTrainImpl(bot, this, json);
         } catch (IOException e) {
             throw new JTAException("Error while trying to read JSON of hype train.", e);
@@ -109,16 +125,24 @@ public class ChannelImpl implements Channel {
 
         String nameToSearch = EntityUtils.userNameToId(user);
 
-        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null,
+                headers);
+
         try {
             JSONObject json = new JSONObject(response.body().string());
+
+            if (ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
             JSONArray jsonArrayData = json.getJSONArray("data");
             for (Object object : jsonArrayData) {
-                if(((JSONObject) object).getString("display_name").equals(user.getName())) {
+                if (((JSONObject) object).getString("display_name").equals(user.getName())) {
                     this.json = (JSONObject) object;
                 }
             }
-        } catch (JSONException | IOException e) { System.err.println("Couldn't update channel."); }
+        } catch (JSONException | IOException e) {
+            throw new JTAException("Couldn't update channel", e);
+        }
     }
 
     @Override

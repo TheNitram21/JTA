@@ -4,14 +4,15 @@ import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
-import de.arnomann.martin.jta.api.entities.Stream;
+import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
+import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
-import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.api.entities.User;
-import okhttp3.Response;
+import de.arnomann.martin.jta.internal.util.ResponseUtils;
+import okhttp3.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,13 +42,20 @@ public class UserImpl implements User {
         String nameToSearch = EntityUtils.userNameToId(this);
 
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, headers);
+
         try {
             JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
             JSONArray jsonArrayData = json.getJSONArray("ta");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(getName())) {
                 this.json = jsonArrayData.getJSONObject(0);
             }
-        } catch (JSONException | IOException e) { throw new JTAException("Can't fetch user.", e); }
+        } catch (JSONException | IOException e) {
+            throw new JTAException("Error while trying to read JSON of channel.", e);
+        }
     }
 
     @Override
@@ -69,15 +77,22 @@ public class UserImpl implements User {
         String nameToSearch = EntityUtils.userNameToId(this);
 
         Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null, headers);
+
         try {
             JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
             JSONArray jsonArrayData = json.getJSONArray("data");
             for (Object object : jsonArrayData) {
                 if(((JSONObject) object).getString("display_name").equals(getName())) {
                     return new ChannelImpl(bot, this, (JSONObject) object);
                 }
             }
-        } catch (JSONException | IOException e) { JTA.getLogger().error("Couldn't fetch channel of user " + getName()); }
+        } catch (JSONException | IOException e) {
+            throw new JTAException("Error while trying to read JSON of channel.", e);
+        }
         return null;
     }
 
@@ -85,4 +100,5 @@ public class UserImpl implements User {
     public UpdateAction<BroadcasterType> getBroadcasterType() {
         return new UpdateAction<>(this, () -> BroadcasterType.getByString(json.getString("broadcaster_type")));
     }
+
 }
