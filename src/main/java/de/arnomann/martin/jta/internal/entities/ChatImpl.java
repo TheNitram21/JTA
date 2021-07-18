@@ -38,10 +38,9 @@ public class ChatImpl implements Chat {
     }
 
     @Override
-    public ChatImpl sendMessage(String msg) {
+    public void sendMessage(String msg) {
         if(!isConnected) throw new JTAException("Not connected to chat!");
         msgbot.sendMessage("#" + EntityUtils.userNameToId(channel.getUser()), msg);
-        return this;
     }
 
     @Override

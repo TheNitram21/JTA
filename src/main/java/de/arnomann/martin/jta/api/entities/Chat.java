@@ -32,7 +32,7 @@ public interface Chat {
      * Sends a message to the chat.
      * @param msg the message to send.
      */
-    Chat sendMessage(String msg);
+    void sendMessage(String msg);
 
     /**
      * Disconnects from the chat.
