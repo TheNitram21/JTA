@@ -1,5 +1,8 @@
 package de.arnomann.martin.jta.api.entities;
 
+/**
+ * Represents a clip of a live stream.
+ */
 public interface Clip {
 
     /**

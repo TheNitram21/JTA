@@ -5,6 +5,9 @@ import de.arnomann.martin.jta.api.JTABot;
 
 import java.io.IOException;
 
+/**
+ * Represents the chat of a {@link Channel}.
+ */
 public interface Chat {
 
     /**
@@ -21,6 +24,7 @@ public interface Chat {
      * @param console Whether there should be console output or not. Should be deactivated in big chats.
      * @throws IrcException If the connection failed.
      * @throws IOException If the bot is already connected.
+     * @see Chat#connect(String, boolean)
      */
     void connect(boolean console) throws IOException, IrcException;
 

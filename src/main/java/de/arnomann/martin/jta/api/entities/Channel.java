@@ -2,6 +2,9 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+/**
+ * Represents a twitch channel that can go live.
+ */
 public interface Channel extends Updatable, IDable {
 
     /**

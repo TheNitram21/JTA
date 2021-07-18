@@ -2,6 +2,9 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+/**
+ * Represents a hype train which occurs when a stream has got a set amount of subscriptions / cheers.
+ */
 public interface HypeTrain extends Updatable {
 
     /**

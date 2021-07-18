@@ -3,6 +3,9 @@ package de.arnomann.martin.jta.api.entities;
 import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+/**
+ * Represents a twitch user.
+ */
 public interface User extends Updatable, IDable {
 
     /**

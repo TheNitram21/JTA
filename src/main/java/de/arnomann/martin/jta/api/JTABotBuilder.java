@@ -3,6 +3,9 @@ package de.arnomann.martin.jta.api;
 import de.arnomann.martin.jta.api.util.Checks;
 import de.arnomann.martin.jta.internal.JTABotImpl;
 
+/**
+ * Builds bots.
+ */
 public class JTABotBuilder {
 
     /**
