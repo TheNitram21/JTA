@@ -1,6 +1,7 @@
 package de.arnomann.martin.jta.api;
 
 import de.arnomann.martin.jta.api.entities.Clip;
+import de.arnomann.martin.jta.api.entities.Team;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.events.Listener;
 
@@ -52,6 +53,22 @@ public interface JTABot {
      * @return the user. <code>null</code>, if no user was found.
      */
     User getUserById(long id);
+
+    /**
+     * Gets a team by name.
+     *
+     * @param name the name to search for.
+     * @return the team. <code>null</code>, if no user was found.
+     */
+    Team getTeamByName(String name);
+
+    /**
+     * Gets a team by id.
+     *
+     * @param id the id to search for.
+     * @return the team. <code>null</code>, if no user was found.
+     */
+    Team getTeamById(long id);
 
     /**
      * Registers event listeners.

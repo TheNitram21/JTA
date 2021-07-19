@@ -101,4 +101,8 @@ public class UserImpl implements User {
         return new UpdateAction<>(this, () -> BroadcasterType.getByString(json.getString("broadcaster_type")));
     }
 
+    @Override
+    public String toString() {
+        return "User[" + getName() + "]";
+    }
 }

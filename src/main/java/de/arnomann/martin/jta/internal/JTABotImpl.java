@@ -3,6 +3,7 @@ package de.arnomann.martin.jta.internal;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.Permission;
+import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.events.Listener;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
@@ -10,6 +11,7 @@ import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.util.Checks;
 import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.entities.ClipImpl;
+import de.arnomann.martin.jta.internal.entities.TeamImpl;
 import de.arnomann.martin.jta.internal.entities.UserImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
@@ -112,7 +114,7 @@ public class JTABotImpl implements JTABot {
         headers.put("Client-ID", getClientId());
         headers.put("Authorization", "Bearer " + getToken());
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/search/channels/" + id, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?id=" + id, null, headers);
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -128,6 +130,56 @@ public class JTABotImpl implements JTABot {
             JTA.getLogger().error(Helpers.format("No results: No user with id {} found.", id));
         }
         return null;
+    }
+
+    @Override
+    public TeamImpl getTeamByName(String name) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + this.getToken());
+        headers.put("Client-ID", this.getClientId());
+
+        String nameToSearch = EntityUtils.teamNameToId(name);
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?name=" + nameToSearch, null,
+                headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            if(json.getJSONArray("data").isEmpty())
+                throw new JTAException("Couldn't get team!");
+
+            return new TeamImpl(this, json.getJSONArray("data").getJSONObject(0));
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read team JSON.", e);
+        }
+    }
+
+    @Override
+    public TeamImpl getTeamById(long id) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + this.getToken());
+        headers.put("Client-ID", this.getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?id=" + id, null,
+                headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            if(json.getJSONArray("data").isEmpty())
+                throw new JTAException("Couldn't get team!");
+
+            return new TeamImpl(this, json.getJSONArray("data").getJSONObject(0));
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read team JSON.", e);
+        }
     }
 
     @Override

@@ -1,10 +1,14 @@
 import de.arnomann.martin.jta.api.*;
 import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.Chat;
+import de.arnomann.martin.jta.api.entities.Team;
 import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
+import kotlin.ExceptionsKt;
 import org.jibble.pircbot.IrcException;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -44,6 +48,13 @@ public class JTATest {
         }
 
         //System.out.println(bot.getClipBySlug("EnticingCorrectDelicataDansGame-ZjHJQXu6ob2R-j19").getTitle());
+
+        try {
+            Team team = bot.getTeamByName("CLASSIFIED");
+            List<User> teamMembers = team.getMembers().queue();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
         l.info("Started bot.");
     }

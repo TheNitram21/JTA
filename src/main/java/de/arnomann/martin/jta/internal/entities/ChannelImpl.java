@@ -116,6 +116,27 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
+    public TeamImpl getTeam() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + bot.getToken());
+        headers.put("Client-ID", bot.getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams/channel?broadcaster_id=" + getUser().getId(),
+                null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            return (TeamImpl) bot.getTeamByName(json.getJSONArray("data").getJSONObject(0).getString("team_name"));
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of team.", e);
+        }
+    }
+
+    @Override
     public void update() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Client-ID", bot.getClientId());
@@ -148,4 +169,8 @@ public class ChannelImpl implements Channel {
         return json.getLong("id");
     }
 
+    @Override
+    public String toString() {
+        return "Channel[" + user.getName() + "]";
+    }
 }
