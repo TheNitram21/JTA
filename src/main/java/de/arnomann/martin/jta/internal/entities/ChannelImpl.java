@@ -11,17 +11,13 @@ import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ChannelImpl implements Channel {
@@ -106,10 +102,12 @@ public class ChannelImpl implements Channel {
                 null, headers);
 
         try {
-            JSONObject json = new JSONObject(response.body().string()).getJSONArray("data").getJSONObject(0);
+            JSONObject json = new JSONObject(response.body().string());
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
+
+            json = json.getJSONArray("data").getJSONObject(0);
 
             return new HypeTrainImpl(bot, this, json);
         } catch (IOException e) {

@@ -5,9 +5,12 @@ import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.HypeTrain;
 import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
+import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.internal.requests.Requester;
+import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
 import org.json.JSONObject;
 
@@ -57,7 +60,12 @@ public class HypeTrainImpl implements HypeTrain {
                         .getUser().getId(), null, headers);
 
         try {
-            this.json = new JSONObject(response.body().string()).getJSONArray("data").getJSONObject(0);
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            this.json = json.getJSONArray("data").getJSONObject(0);
         } catch (IOException e) {
             throw new JTAException("Error while trying to read JSON of hype train.", e);
         }

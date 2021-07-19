@@ -93,6 +93,9 @@ public class JTABotImpl implements JTABot {
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
 
+            if(json.getJSONArray("data").isEmpty())
+                throw new JTAException("No user with name " + name + " found!");
+
             JSONArray jsonArrayData = json.getJSONArray("data");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(name)) {
                 return new UserImpl(jsonArrayData.getJSONObject(0), this);
@@ -116,6 +119,9 @@ public class JTABotImpl implements JTABot {
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
+
+            if(json.getJSONArray("data").isEmpty())
+                throw new JTAException("No user with id " + id + " found!");
 
             return new UserImpl(json, this);
         } catch (JSONException | IOException e) {
