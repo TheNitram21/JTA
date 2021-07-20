@@ -3,6 +3,7 @@ package de.arnomann.martin.jta.api;
 import de.arnomann.martin.jta.api.entities.Clip;
 import de.arnomann.martin.jta.api.entities.Team;
 import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.entities.Video;
 import de.arnomann.martin.jta.api.events.Listener;
 
 import java.util.EnumSet;
@@ -58,7 +59,7 @@ public interface JTABot {
      * Gets a team by name.
      *
      * @param name the name to search for.
-     * @return the team. <code>null</code>, if no user was found.
+     * @return the team. <code>null</code>, if no video was found.
      */
     Team getTeamByName(String name);
 
@@ -66,9 +67,16 @@ public interface JTABot {
      * Gets a team by id.
      *
      * @param id the id to search for.
-     * @return the team. <code>null</code>, if no user was found.
+     * @return the team. <code>null</code>, if no team was found.
      */
     Team getTeamById(long id);
+
+    /**
+     * Gets a video by id.
+     * @param id the id to search for.
+     * @return the video. <code>null</code>, if no video was found.
+     */
+    Video getVideoById(long id);
 
     /**
      * Registers event listeners.

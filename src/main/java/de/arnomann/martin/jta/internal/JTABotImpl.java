@@ -4,6 +4,7 @@ import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.Permission;
 import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.entities.Video;
 import de.arnomann.martin.jta.api.events.Listener;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
@@ -13,6 +14,7 @@ import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.entities.ClipImpl;
 import de.arnomann.martin.jta.internal.entities.TeamImpl;
 import de.arnomann.martin.jta.internal.entities.UserImpl;
+import de.arnomann.martin.jta.internal.entities.VideoImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
@@ -179,6 +181,27 @@ public class JTABotImpl implements JTABot {
             return new TeamImpl(this, json.getJSONArray("data").getJSONObject(0));
         } catch (IOException e) {
             throw new JTAException("Error while trying to read team JSON.", e);
+        }
+    }
+
+    @Override
+    public VideoImpl getVideoById(long id) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getToken());
+        headers.put("Client-ID", getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + id, null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if (ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            return new VideoImpl(this, json.getJSONArray("data").getJSONObject(0), getUserByName(json.getJSONArray("data")
+                    .getJSONObject(0).getString("user_name")));
+        } catch (IOException e) {
+            throw new JTAException("Couldn't update video", e);
         }
     }
 
