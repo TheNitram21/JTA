@@ -4,6 +4,7 @@ import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
+import de.arnomann.martin.jta.api.entities.StreamSchedule;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
@@ -99,6 +100,27 @@ public class UserImpl implements User {
     @Override
     public UpdateAction<BroadcasterType> getBroadcasterType() {
         return new UpdateAction<>(this, () -> BroadcasterType.getByString(json.getString("broadcaster_type")));
+    }
+
+    @Override
+    public StreamSchedule getStreamSchedule() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + bot.getToken());
+        headers.put("Client-ID", bot.getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/schedule?broadcaster_id=" + getId(),
+                null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if (ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            return new StreamScheduleImpl(this.bot, json.getJSONObject("data"), this);
+        } catch (IOException e) {
+            throw new JTAException("Couldn't update stream schedule", e);
+        }
     }
 
     @Override

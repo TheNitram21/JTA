@@ -26,4 +26,10 @@ public interface User extends Updatable, IDable {
      */
     UpdateAction<BroadcasterType> getBroadcasterType();
 
+    /**
+     * Returns the stream schedule for this user.
+     * @return the schedule.
+     */
+    StreamSchedule getStreamSchedule();
+
 }

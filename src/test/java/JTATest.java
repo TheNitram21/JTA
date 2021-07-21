@@ -1,8 +1,5 @@
 import de.arnomann.martin.jta.api.*;
-import de.arnomann.martin.jta.api.entities.Channel;
-import de.arnomann.martin.jta.api.entities.Chat;
-import de.arnomann.martin.jta.api.entities.Team;
-import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.entities.*;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import kotlin.ExceptionsKt;
 import org.jibble.pircbot.IrcException;
@@ -56,6 +53,10 @@ public class JTATest {
         } catch(Exception e) {
             e.printStackTrace();
         }
+
+        StreamSchedule schedule = nitram.getStreamSchedule();
+        for(StreamScheduleSegment segment : schedule.getSegments().queue())
+            System.out.println(segment.getTitle());
 
         l.info("Started bot.");
     }
