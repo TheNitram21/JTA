@@ -35,6 +35,12 @@ public interface JTABot {
     String getClientId();
 
     /**
+     * Sets the redirect uri used when getting the token.
+     * @param redirectUri the redirect uri.
+     */
+    void setRedirectUri(String redirectUri);
+
+    /**
      * Stops the bot.
      */
     void stop();

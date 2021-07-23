@@ -35,8 +35,10 @@ public class JTABotImpl implements JTABot {
     private final String clientSecret;
     private String accessToken = "";
     private long tokenExpiresWhen = 0L;
+    private String redirectUri = "http://localhost";
     private String oAuthToken = "";
     private final List<Permission> neededPermissions = new ArrayList<>();
+    private boolean needsToVerify = true;
 
     public JTABotImpl(String clientId, String clientSecret) {
         this.clientId = clientId;
@@ -74,6 +76,11 @@ public class JTABotImpl implements JTABot {
     @Override
     public String getClientId() {
         return clientId;
+    }
+
+    @Override
+    public void setRedirectUri(String redirectUri) {
+        if(!redirectUri.isBlank()) this.redirectUri = redirectUri;
     }
 
     @Override
