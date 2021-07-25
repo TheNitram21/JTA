@@ -17,7 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ChannelImpl implements Channel {
@@ -133,6 +135,32 @@ public class ChannelImpl implements Channel {
             return (TeamImpl) bot.getTeamByName(json.getJSONArray("data").getJSONObject(0).getString("team_name"));
         } catch (IOException e) {
             throw new JTAException("Error while trying to read JSON of team.", e);
+        }
+    }
+
+    @Override
+    public List<ChatBadge> getChatBadges() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + bot.getToken());
+        headers.put("Client-ID", bot.getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges?broadcaster_id=" + getUser().getId(),
+                null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<ChatBadge> list = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                list.add(new ChatBadgeImpl(this.bot, (JSONObject) obj));
+
+            return list;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of chat badges.", e);
         }
     }
 

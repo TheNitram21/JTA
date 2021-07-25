@@ -3,6 +3,8 @@ package de.arnomann.martin.jta.api.entities;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 
+import java.util.List;
+
 /**
  * Represents a twitch channel that can go live.
  */
@@ -50,5 +52,11 @@ public interface Channel extends Updatable, IDable {
      * @throws JTAException if the channel is in no team.
      */
     Team getTeam();
+
+    /**
+     * Returns a list containing all chat badges in this channel's chat.
+     * @return the chat badges.
+     */
+    List<ChatBadge> getChatBadges();
 
 }

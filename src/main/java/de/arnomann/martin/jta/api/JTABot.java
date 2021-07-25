@@ -1,12 +1,10 @@
 package de.arnomann.martin.jta.api;
 
-import de.arnomann.martin.jta.api.entities.Clip;
-import de.arnomann.martin.jta.api.entities.Team;
-import de.arnomann.martin.jta.api.entities.User;
-import de.arnomann.martin.jta.api.entities.Video;
+import de.arnomann.martin.jta.api.entities.*;
 import de.arnomann.martin.jta.api.events.Listener;
 
 import java.util.EnumSet;
+import java.util.List;
 
 /**
  * A bot.
@@ -135,5 +133,11 @@ public interface JTABot {
      * @param permissions the permission to remove.
      */
     void removeNeededPermissions(EnumSet<Permission> permissions);
+
+    /**
+     * Returns a list of global chat badges.
+     * @return the global chat badges.
+     */
+    List<ChatBadge> getGlobalChatBadges();
 
 }

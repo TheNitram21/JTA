@@ -3,6 +3,7 @@ package de.arnomann.martin.jta.internal;
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.Permission;
+import de.arnomann.martin.jta.api.entities.ChatBadge;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.entities.Video;
 import de.arnomann.martin.jta.api.events.Listener;
@@ -11,10 +12,7 @@ import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.util.Checks;
 import de.arnomann.martin.jta.api.util.EntityUtils;
-import de.arnomann.martin.jta.internal.entities.ClipImpl;
-import de.arnomann.martin.jta.internal.entities.TeamImpl;
-import de.arnomann.martin.jta.internal.entities.UserImpl;
-import de.arnomann.martin.jta.internal.entities.VideoImpl;
+import de.arnomann.martin.jta.internal.entities.*;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
@@ -272,6 +270,32 @@ public class JTABotImpl implements JTABot {
     @Override
     public void removeNeededPermissions(EnumSet<Permission> permissions) {
         neededPermissions.removeAll(permissions);
+    }
+
+    @Override
+    public List<ChatBadge> getGlobalChatBadges() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getToken());
+        headers.put("Client-ID", getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges/global",
+                null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<ChatBadge> list = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                list.add(new ChatBadgeImpl(this, (JSONObject) obj));
+
+            return list;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of chat badges.", e);
+        }
     }
 
 }

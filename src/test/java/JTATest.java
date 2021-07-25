@@ -62,6 +62,14 @@ public class JTATest {
             e.printStackTrace();
         }
 
+        List<ChatBadge> chatBadges = bot.getUserByName("thejocraft_live").getChannel().getChatBadges();
+        for(ChatBadge chatBadge : chatBadges)
+            System.out.println(chatBadge.getId());
+
+        List<ChatBadge> globalChatBadges = bot.getGlobalChatBadges();
+        for(ChatBadge chatBadge : globalChatBadges)
+            System.out.println(chatBadge.getId());
+
         l.info("Started bot.");
     }
 
