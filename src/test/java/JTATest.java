@@ -54,9 +54,13 @@ public class JTATest {
             e.printStackTrace();
         }
 
-        StreamSchedule schedule = nitram.getStreamSchedule();
-        for(StreamScheduleSegment segment : schedule.getSegments().queue())
-            System.out.println(segment.getTitle());
+        try {
+            StreamSchedule schedule = nitram.getStreamSchedule();
+            for (StreamScheduleSegment segment : schedule.getSegments().queue())
+                System.out.println(segment.getTitle());
+        } catch(ErrorResponseException e) {
+            e.printStackTrace();
+        }
 
         l.info("Started bot.");
     }

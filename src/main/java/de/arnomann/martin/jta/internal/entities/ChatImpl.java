@@ -25,7 +25,7 @@ public class ChatImpl implements Chat {
 
     @Override
     public void connect(String oauth, boolean console) throws IOException, IrcException {
-        msgbot = new MessageSenderBot("jtabot", this.bot, channel);
+        msgbot = new MessageSenderBot("jtabot", this.bot, "#" + channel.getUser().getName());
         msgbot.setVerbose(console);
         msgbot.connect("irc.twitch.tv", 6667, oauth);
         msgbot.joinChannel("#" + EntityUtils.userNameToId(channel.getUser()));

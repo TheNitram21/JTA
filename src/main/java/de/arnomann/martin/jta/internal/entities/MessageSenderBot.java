@@ -15,18 +15,18 @@ import java.io.IOException;
 public class MessageSenderBot extends PircBot {
 
     private final JTABot bot;
-    private final Channel channel;
+    private final String channelName;
 
-    MessageSenderBot(String name, JTABot bot, Channel channel) {
+    MessageSenderBot(String name, JTABot bot, String channelName) {
         this.setName(name);
         this.bot = bot;
-        this.channel = channel;
+        this.channelName = channelName;
     }
 
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         try {
-            Chat c = bot.getUserByName(channel.substring(1)).getChannel().getChat();
+            Chat c = bot.getUserByName(channelName).getChannel().getChat();
             c.connect(bot.getChatOAuthToken(), false);
             if (message.startsWith("/"))
                 EventHandler.onEvent(new SlashCommandEvent(bot, new MessageImpl(bot, message.substring(1), bot.getUserByName(sender),
@@ -37,10 +37,6 @@ public class MessageSenderBot extends PircBot {
             e.printStackTrace();
         }
 
-    }
-
-    public void sendMessage(User channel, String msg) {
-        sendMessage("#" + channel.getName(), msg);
     }
 
 }
