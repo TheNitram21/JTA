@@ -2,6 +2,7 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,5 +27,11 @@ public interface Team extends Updatable, IDable {
      * @return the id.
      */
     UpdateAction<String> getInfo();
+
+    /**
+     * Returns when the team was created.
+     * @return the creation time.
+     */
+    LocalDateTime getCreationTime();
 
 }

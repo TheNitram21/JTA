@@ -6,6 +6,7 @@ import de.arnomann.martin.jta.api.entities.Game;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
+import de.arnomann.martin.jta.api.util.TimeUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.api.entities.Stream;
@@ -15,6 +16,7 @@ import okhttp3.Response;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -72,6 +74,11 @@ public class StreamImpl implements Stream {
             else
                 return game;
         });
+    }
+
+    @Override
+    public LocalDateTime getWhenStarted() {
+        return TimeUtils.twitchTimeToLocalDateTime(json.getString("started_at"));
     }
 
     @Override

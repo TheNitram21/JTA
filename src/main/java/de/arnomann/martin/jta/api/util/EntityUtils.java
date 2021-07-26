@@ -2,6 +2,9 @@ package de.arnomann.martin.jta.api.util;
 
 import de.arnomann.martin.jta.api.entities.User;
 
+/**
+ * Does cool stuff with entities.
+ */
 public class EntityUtils {
 
     /**

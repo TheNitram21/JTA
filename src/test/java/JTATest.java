@@ -33,6 +33,8 @@ public class JTATest {
         nitram = bot.getUserByName("TheNitram21");
 
         System.out.println("Ich bin" + (nitram.getChannel().isLive().queue() ? " " : " nicht ") + "live.");
+        System.out.println("Nitram user creation date: " + nitram.getCreationTime().getDayOfMonth() + "." + nitram.getCreationTime().getMonthValue() + "." +
+                nitram.getCreationTime().getYear());
 
         Chat nitramChat = nitram.getChannel().getChat();
 

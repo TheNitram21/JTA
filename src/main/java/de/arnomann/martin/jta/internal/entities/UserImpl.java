@@ -10,6 +10,7 @@ import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.EntityUtils;
+import de.arnomann.martin.jta.api.util.TimeUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
@@ -19,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,6 +123,11 @@ public class UserImpl implements User {
         } catch (IOException e) {
             throw new JTAException("Couldn't update stream schedule", e);
         }
+    }
+
+    @Override
+    public LocalDateTime getCreationTime() {
+        return TimeUtils.twitchTimeToLocalDateTime(json.getString("created_at"));
     }
 
     @Override

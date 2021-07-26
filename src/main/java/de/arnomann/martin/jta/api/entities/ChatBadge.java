@@ -1,5 +1,8 @@
 package de.arnomann.martin.jta.api.entities;
 
+/**
+ * Represents a twitch chat badge.
+ */
 public interface ChatBadge {
 
     /**

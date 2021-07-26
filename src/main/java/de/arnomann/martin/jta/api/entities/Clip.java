@@ -1,5 +1,7 @@
 package de.arnomann.martin.jta.api.entities;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a clip of a live stream.
  */
@@ -38,5 +40,11 @@ public interface Clip {
      * @return the URL.
      */
     String getUrl();
+
+    /**
+     * Returns when the clip was created.
+     * @return the creation time.
+     */
+    LocalDateTime getCreationTime();
 
 }

@@ -8,6 +8,7 @@ import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
+import de.arnomann.martin.jta.api.util.TimeUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
@@ -15,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class TeamImpl implements Team {
@@ -56,6 +58,11 @@ public class TeamImpl implements Team {
     @Override
     public UpdateAction<String> getInfo() {
         return new UpdateAction<>(this, () -> json.getString("info"));
+    }
+
+    @Override
+    public LocalDateTime getCreationTime() {
+        return TimeUtils.twitchTimeToLocalDateTime(json.getString("created_at"));
     }
 
     @Override

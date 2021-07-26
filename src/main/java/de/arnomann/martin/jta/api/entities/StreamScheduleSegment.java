@@ -2,6 +2,8 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a stream schedule segment.
  * @see StreamSchedule
@@ -31,5 +33,17 @@ public interface StreamScheduleSegment {
      * @return the schedule.
      */
     StreamSchedule getSchedule();
+
+    /**
+     * Returns when the stream is planned to start.
+     * @return the start time.
+     */
+    LocalDateTime getStartTime();
+
+    /**
+     * Returns when the stream is planned to end.
+     * @return the end time.
+     */
+    LocalDateTime getEndTime();
 
 }

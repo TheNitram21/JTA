@@ -3,7 +3,10 @@ package de.arnomann.martin.jta.internal.entities;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Clip;
 import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.util.TimeUtils;
 import org.json.JSONObject;
+
+import java.time.LocalDateTime;
 
 public class ClipImpl implements Clip {
 
@@ -42,6 +45,11 @@ public class ClipImpl implements Clip {
     @Override
     public String getUrl() {
         return json.getString("url");
+    }
+
+    @Override
+    public LocalDateTime getCreationTime() {
+        return TimeUtils.twitchTimeToLocalDateTime(json.getString("created_at"));
     }
 
 }

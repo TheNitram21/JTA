@@ -2,6 +2,8 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a twitch video.
  */
@@ -30,5 +32,11 @@ public interface Video extends IDable, Updatable {
      * @return the views.
      */
     UpdateAction<Long> getViews();
+
+    /**
+     * Returns when the video was created.
+     * @return the creation time.
+     */
+    LocalDateTime getCreationTime();
 
 }

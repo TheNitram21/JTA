@@ -2,6 +2,8 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a live stream.
  */
@@ -24,5 +26,11 @@ public interface Stream extends Updatable, IDable {
      * @return the game.
      */
     UpdateAction<Game> getGame();
+
+    /**
+     * Returns when the stream started.
+     * @return the starting time.
+     */
+    LocalDateTime getWhenStarted();
 
 }

@@ -3,7 +3,10 @@ package de.arnomann.martin.jta.internal.entities;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.StreamSchedule;
 import de.arnomann.martin.jta.api.entities.StreamScheduleSegment;
+import de.arnomann.martin.jta.api.util.TimeUtils;
 import org.json.JSONObject;
+
+import java.time.LocalDateTime;
 
 public class StreamScheduleSegmentImpl implements StreamScheduleSegment {
 
@@ -35,5 +38,15 @@ public class StreamScheduleSegmentImpl implements StreamScheduleSegment {
     @Override
     public StreamSchedule getSchedule() {
         return schedule;
+    }
+
+    @Override
+    public LocalDateTime getStartTime() {
+        return TimeUtils.twitchTimeToLocalDateTime("start_time");
+    }
+
+    @Override
+    public LocalDateTime getEndTime() {
+        return TimeUtils.twitchTimeToLocalDateTime("end_time");
     }
 }

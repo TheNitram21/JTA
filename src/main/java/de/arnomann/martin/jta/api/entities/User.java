@@ -3,6 +3,8 @@ package de.arnomann.martin.jta.api.entities;
 import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
+import java.time.LocalDateTime;
+
 /**
  * Represents a twitch user.
  */
@@ -31,5 +33,11 @@ public interface User extends Updatable, IDable {
      * @return the schedule.
      */
     StreamSchedule getStreamSchedule();
+
+    /**
+     * Returns when the user was created.
+     * @return the creation time.
+     */
+    LocalDateTime getCreationTime();
 
 }
