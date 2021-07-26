@@ -140,4 +140,10 @@ public interface JTABot {
      */
     List<ChatBadge> getGlobalChatBadges();
 
+    /**
+     * Returns a list of global emotes.
+     * @return the global emotes.
+     */
+    List<Emote> getGlobalEmotes();
+
 }

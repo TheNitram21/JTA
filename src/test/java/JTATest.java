@@ -62,15 +62,45 @@ public class JTATest {
             e.printStackTrace();
         }
 
-        List<ChatBadge> chatBadges = bot.getUserByName("thejocraft_live").getChannel().getChatBadges();
-        for(ChatBadge chatBadge : chatBadges)
-            System.out.println(chatBadge.getId());
+        User tjc = bot.getUserByName("thejocraft_live");
+
+        List<ChatBadge> chatBadges = tjc.getChannel().getChatBadges();
+        for(int i = 0; i < chatBadges.size(); i++) {
+            System.out.print(chatBadges.get(i).getId());
+            if(i + 1 != chatBadges.size())
+                System.out.print(", ");
+            else
+                System.out.println();
+        }
 
         List<ChatBadge> globalChatBadges = bot.getGlobalChatBadges();
-        for(ChatBadge chatBadge : globalChatBadges)
-            System.out.println(chatBadge.getId());
+        for(int i = 0; i < globalChatBadges.size(); i++) {
+            System.out.print(globalChatBadges.get(i).getId());
+            if(i + 1 != globalChatBadges.size())
+                System.out.print(", ");
+            else
+                System.out.println();
+        }
 
-        l.info("Started bot.");
+        List<Emote> emotes = tjc.getChannel().getCustomEmotes();
+        for(int i = 0; i < emotes.size(); i++) {
+            System.out.print(emotes.get(i).getName());
+            if(i + 1 != emotes.size())
+                System.out.print(", ");
+            else
+                System.out.println();
+        }
+
+        List<Emote> globalEmotes = bot.getGlobalEmotes();
+        for(int i = 0; i < globalEmotes.size(); i++) {
+            System.out.print(globalEmotes.get(i).getName());
+            if(i + 1 != globalEmotes.size())
+                System.out.print(", ");
+            else
+                System.out.println();
+        }
+
+        l.info("Successfully tested API.");
     }
 
 }

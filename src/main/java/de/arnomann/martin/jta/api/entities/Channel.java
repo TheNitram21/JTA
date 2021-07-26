@@ -59,4 +59,10 @@ public interface Channel extends Updatable, IDable {
      */
     List<ChatBadge> getChatBadges();
 
+    /**
+     * Returns a list containging all custom emotes of this channel.
+     * @return the emotes.
+     */
+    List<Emote> getCustomEmotes();
+
 }

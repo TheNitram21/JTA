@@ -165,6 +165,32 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
+    public List<Emote> getCustomEmotes() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + bot.getToken());
+        headers.put("Client-ID", bot.getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes?broadcaster_id=" + getUser().getId(),
+                null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<Emote> list = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                list.add(new EmoteImpl(this.bot, this, (JSONObject) obj));
+
+            return list;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of channel emotes.", e);
+        }
+    }
+
+    @Override
     public void update() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Client-ID", bot.getClientId());

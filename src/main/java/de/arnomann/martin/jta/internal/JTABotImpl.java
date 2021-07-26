@@ -4,6 +4,7 @@ import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.Permission;
 import de.arnomann.martin.jta.api.entities.ChatBadge;
+import de.arnomann.martin.jta.api.entities.Emote;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.entities.Video;
 import de.arnomann.martin.jta.api.events.Listener;
@@ -291,6 +292,32 @@ public class JTABotImpl implements JTABot {
 
             for(Object obj : json.getJSONArray("data"))
                 list.add(new ChatBadgeImpl(this, (JSONObject) obj));
+
+            return list;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of chat badges.", e);
+        }
+    }
+
+    @Override
+    public List<Emote> getGlobalEmotes() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getToken());
+        headers.put("Client-ID", getClientId());
+
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes/global",
+                null, headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<Emote> list = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                list.add(new EmoteImpl(this, null, (JSONObject) obj));
 
             return list;
         } catch (IOException e) {
