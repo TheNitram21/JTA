@@ -1,3 +1,5 @@
+[![Release](https://jitpack.io/v/NitramMann21/JTA.svg)](https://jitpack.io/#NitramMann21/JTA)
+
 # JTA (Java Twitch API)
 A Java Wrapper for the Twitch API.
 
