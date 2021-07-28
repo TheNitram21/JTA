@@ -4,6 +4,7 @@ import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Represents a twitch channel that can go live.
@@ -64,5 +65,17 @@ public interface Channel extends Updatable, IDable {
      * @return the emotes.
      */
     List<Emote> getCustomEmotes();
+
+    /**
+     * Sets the title of the stream.
+     * @param title the new title.
+     */
+    void setStreamTitle(String title);
+
+    /**
+     * Sets the language of the channel's stream.
+     * @param locale the locale of the language.
+     */
+    void setStreamLanguage(Locale locale);
 
 }
