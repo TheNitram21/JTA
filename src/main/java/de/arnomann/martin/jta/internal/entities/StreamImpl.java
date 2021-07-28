@@ -47,11 +47,8 @@ public class StreamImpl implements Stream {
         if(!streamer.isLive().queue())
             throw new JTAException(Helpers.format("User {} has gone offline!", streamer.getUser().getName()));
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", bot.getClientId());
-        headers.put("Authorization", "Bearer " + bot.getToken());
-
-        Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), null, headers);
+        Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), null, this.bot
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
