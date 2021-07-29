@@ -79,7 +79,7 @@ public class VideoImpl implements Video {
     @Override
     public void delete() {
         Response response = new Requester(JTA.getClient()).delete("https://api.twitch.tv/helix/videos?id=" + getId(), null, this.bot
-                .defaultGetterHeaders());
+                .defaultSetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
