@@ -46,8 +46,7 @@ public class ChannelImpl implements Channel {
             if (!isLive().queue())
                 throw new JTAException(Helpers.format("Channel {} is not live!", getUser().getName()));
 
-            Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), null,
-                    this.bot.defaultGetterHeaders());
+            Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), this.bot.defaultGetterHeaders());
 
             try {
                 JSONObject json = new JSONObject(response.body().string());
@@ -75,7 +74,7 @@ public class ChannelImpl implements Channel {
     @Override
     public long getFollowerCount() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() +
-                "/follows", null, this.bot.defaultGetterHeaders());
+                "/follows", this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -92,7 +91,7 @@ public class ChannelImpl implements Channel {
     @Override
     public HypeTrain getHypeTrain() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=" +
-                getUser().getId(), null, this.bot.defaultGetterHeaders());
+                getUser().getId(), this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -111,7 +110,7 @@ public class ChannelImpl implements Channel {
     @Override
     public TeamImpl getTeam() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams/channel?broadcaster_id=" +
-                getUser().getId(), null, this.bot.defaultGetterHeaders());
+                getUser().getId(), this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -128,7 +127,7 @@ public class ChannelImpl implements Channel {
     @Override
     public List<ChatBadge> getChatBadges() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges?broadcaster_id=" +
-                getUser().getId(), null, this.bot.defaultGetterHeaders());
+                getUser().getId(), this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -150,7 +149,7 @@ public class ChannelImpl implements Channel {
     @Override
     public List<Emote> getCustomEmotes() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes?broadcaster_id=" +
-                getUser().getId(), null, this.bot.defaultGetterHeaders());
+                getUser().getId(), this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -210,7 +209,7 @@ public class ChannelImpl implements Channel {
     public void update() {
         String nameToSearch = EntityUtils.userNameToId(user);
 
-        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null,
+        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch,
                 this.bot.defaultGetterHeaders());
 
         try {

@@ -1,5 +1,6 @@
 package de.arnomann.martin.jta.api.entities;
 
+import de.arnomann.martin.jta.api.AdLength;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
 import java.time.LocalDateTime;
@@ -32,5 +33,12 @@ public interface Stream extends Updatable, IDable {
      * @return the starting time.
      */
     LocalDateTime getWhenStarted();
+
+    /**
+     * Starts an ad in this stream.
+     * @param length the length of the ad.
+     * @scopes channel:edit:commercial
+     */
+    void startAd(AdLength length);
 
 }

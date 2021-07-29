@@ -51,7 +51,7 @@ public class HypeTrainImpl implements HypeTrain {
     @Override
     public void update() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=" + getChannel()
-                        .getUser().getId(), null, this.bot.defaultGetterHeaders());
+                        .getUser().getId(), this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());

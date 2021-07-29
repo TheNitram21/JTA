@@ -67,7 +67,7 @@ public class TeamImpl implements Team {
 
     @Override
     public void update() {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?name=" + json.getString("team_name"), null,
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?name=" + json.getString("team_name"),
                 this.bot.defaultGetterHeaders());
 
         try {

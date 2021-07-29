@@ -51,7 +51,7 @@ public class StreamScheduleImpl implements StreamSchedule {
     @Override
     public void update() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/schedule?broadcaster_id=" + getStreamer().getId(),
-                null, this.bot.defaultGetterHeaders());
+                this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
