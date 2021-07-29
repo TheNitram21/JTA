@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>de.arnomann.martin</groupId>
     <artifactId>JTA</artifactId>
-    <version>0.1.1-beta</version>
+    <version>2.0.0</version>
 
     <name>JTA - Java Twitch API</name>
     <description>A Java wrapper for the Twitch API</description>
@@ -36,5 +36,25 @@
             <version>1.5.0</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.8.1</version>
+                <configuration>
+                    <tags>
+                        <tag>
+                            <name>scopes</name>
+                            <placement>a</placement>
+                            <head>Needed scopes:</head>
+                        </tag>
+                    </tags>
+                    <excludePackageNames>de.arnomann.martin.jta.internal.*:de.arnomann.martin.jta.internal</excludePackageNames>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

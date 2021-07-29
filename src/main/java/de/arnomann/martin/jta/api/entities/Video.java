@@ -35,6 +35,7 @@ public interface Video extends IDable, Updatable {
 
     /**
      * Deletes the video.
+     * @scopes channel:manage:videos
      */
     void delete();
 

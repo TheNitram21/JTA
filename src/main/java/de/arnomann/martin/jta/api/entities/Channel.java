@@ -69,12 +69,14 @@ public interface Channel extends Updatable, IDable {
     /**
      * Sets the title of the stream.
      * @param title the new title.
+     * @scopes channel:manage:broadcast
      */
     void setStreamTitle(String title);
 
     /**
      * Sets the language of the channel's stream.
      * @param locale the locale of the language.
+     * @scopes channel:manage:broadcast
      */
     void setStreamLanguage(Locale locale);
 
