@@ -13,12 +13,11 @@ import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 public class VideoImpl implements Video {
 
@@ -75,6 +74,21 @@ public class VideoImpl implements Video {
     @Override
     public UpdateAction<Long> getViews() {
         return new UpdateAction<>(this, () -> json.getLong("view_count"));
+    }
+
+    @Override
+    public void delete() {
+        Response response = new Requester(JTA.getClient()).delete("https://api.twitch.tv/helix/videos?id=" + getId(), null, this.bot
+                .defaultGetterHeaders());
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+        } catch (IOException | JSONException ignored) {
+            // Ignore it. Twitch only sends the deleted videos.
+        }
     }
 
     @Override
