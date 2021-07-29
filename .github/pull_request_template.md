@@ -9,5 +9,5 @@
 - [ ] Repository README
 - [ ] Other: _____
 
-### What will the user code look like?
-Remove this if you don't change code.
+### Description
+A description what this pull request will change.
