@@ -37,7 +37,7 @@ public class JTABotImpl implements JTABot {
     private String redirectUri = "http://localhost";
     private String oAuthToken = "";
     private final List<Permission> neededPermissions = new ArrayList<>();
-    private boolean needsToVerify = true;
+    private String userAccessToken = "";
 
     public JTABotImpl(String clientId, String clientSecret) {
         this.clientId = clientId;
@@ -61,8 +61,9 @@ public class JTABotImpl implements JTABot {
                         sb.append(" ");
                 }
 
-                Response response = new Requester(JTA.getClient()).request("https://id.twitch.tv/oauth2/token", RequestBody.create("client_id=" + clientId + "&client_secret=" + clientSecret
-                        + "&grant_type=client_credentials&scopes=" + sb, null), null);
+                Response response = new Requester(JTA.getClient()).request("https://id.twitch.tv/oauth2/token", RequestBody.create(
+                        "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=client_credentials&scopes=" + sb,
+                        null), null);
                 accessToken = new JSONObject(response.body().string()).getString("access_token");
                 tokenExpiresWhen = System.currentTimeMillis() + 10000;
             } catch(IOException e) {
@@ -70,6 +71,17 @@ public class JTABotImpl implements JTABot {
             }
         }
         return accessToken;
+    }
+
+    @Override
+    public void setUserAccessToken(String userToken) {
+        Checks.notEmpty(userToken, "User Access Token");
+        this.userAccessToken = userToken;
+    }
+
+    @Override
+    public String getUserAccessToken() {
+        return this.userAccessToken;
     }
 
     @Override
@@ -83,19 +95,34 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
+    public Map<String, String> defaultGetterHeaders() {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getToken());
+        headers.put("Client-ID", getClientId());
+        return headers;
+    }
+
+    @Override
+    public Map<String, String> defaultSetterHeaders() {
+        Checks.notEmpty(this.userAccessToken, "User Access Token");
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + getUserAccessToken());
+        headers.put("Client-ID", getClientId());
+        return headers;
+    }
+
+    @Override
     public void stop() {
         System.exit(0);
     }
 
     @Override
     public UserImpl getUserByName(String name) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", getClientId());
-        headers.put("Authorization", "Bearer " + getToken());
-
         String nameToSearch = EntityUtils.userNameToId(name);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -118,11 +145,8 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserById(long id) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", getClientId());
-        headers.put("Authorization", "Bearer " + getToken());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?id=" + id, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?id=" + id, null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -142,14 +166,10 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public TeamImpl getTeamByName(String name) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + this.getToken());
-        headers.put("Client-ID", this.getClientId());
-
         String nameToSearch = EntityUtils.teamNameToId(name);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?name=" + nameToSearch, null,
-                headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?name=" + nameToSearch, null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -168,12 +188,8 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public TeamImpl getTeamById(long id) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + this.getToken());
-        headers.put("Client-ID", this.getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?id=" + id, null,
-                headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?id=" + id, null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -192,11 +208,8 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public VideoImpl getVideoById(long id) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + getToken());
-        headers.put("Client-ID", getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + id, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + id, null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -243,11 +256,8 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public ClipImpl getClipBySlug(String slug) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", getClientId());
-        headers.put("Authorization", "Bearer " + getToken());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/clips?id=" + slug, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/clips?id=" + slug, null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -275,12 +285,8 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public List<ChatBadge> getGlobalChatBadges() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + getToken());
-        headers.put("Client-ID", getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges/global",
-                null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges/global", null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -301,12 +307,8 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public List<Emote> getGlobalEmotes() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + getToken());
-        headers.put("Client-ID", getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes/global",
-                null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes/global", null, this
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());

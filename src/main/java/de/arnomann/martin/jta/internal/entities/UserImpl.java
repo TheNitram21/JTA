@@ -38,13 +38,10 @@ public class UserImpl implements User {
 
     @Override
     public void update() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", bot.getClientId());
-        headers.put("Authorization", "Bearer " + bot.getToken());
-
         String nameToSearch = EntityUtils.userNameToId(this);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, this.bot
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -73,13 +70,10 @@ public class UserImpl implements User {
 
     @Override
     public Channel getChannel() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", bot.getClientId());
-        headers.put("Authorization", "Bearer " + bot.getToken());
-
         String nameToSearch = EntityUtils.userNameToId(this);
 
-        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null, headers);
+        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null,
+            this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -106,12 +100,8 @@ public class UserImpl implements User {
 
     @Override
     public StreamSchedule getStreamSchedule() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/schedule?broadcaster_id=" + getId(),
-                null, headers);
+                null, this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());

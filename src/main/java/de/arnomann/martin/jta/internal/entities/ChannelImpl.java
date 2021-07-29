@@ -11,6 +11,7 @@ import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,8 +19,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ChannelImpl implements Channel {
@@ -45,11 +46,8 @@ public class ChannelImpl implements Channel {
             if (!isLive().queue())
                 throw new JTAException(Helpers.format("Channel {} is not live!", getUser().getName()));
 
-            Map<String, String> headers = new HashMap<>();
-            headers.put("Client-ID", bot.getClientId());
-            headers.put("Authorization", "Bearer " + bot.getToken());
-
-            Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), null, headers);
+            Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), null,
+                    this.bot.defaultGetterHeaders());
 
             try {
                 JSONObject json = new JSONObject(response.body().string());
@@ -76,11 +74,8 @@ public class ChannelImpl implements Channel {
 
     @Override
     public long getFollowerCount() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", bot.getClientId());
-        headers.put("Authorization", "Bearer " + bot.getToken());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() + "/follows", null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() +
+                "/follows", null, this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -96,12 +91,8 @@ public class ChannelImpl implements Channel {
 
     @Override
     public HypeTrain getHypeTrain() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=" + getUser().getId(),
-                null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=" +
+                getUser().getId(), null, this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -119,12 +110,8 @@ public class ChannelImpl implements Channel {
 
     @Override
     public TeamImpl getTeam() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams/channel?broadcaster_id=" + getUser().getId(),
-                null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams/channel?broadcaster_id=" +
+                getUser().getId(), null, this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -140,12 +127,8 @@ public class ChannelImpl implements Channel {
 
     @Override
     public List<ChatBadge> getChatBadges() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges?broadcaster_id=" + getUser().getId(),
-                null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges?broadcaster_id=" +
+                getUser().getId(), null, this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -166,12 +149,8 @@ public class ChannelImpl implements Channel {
 
     @Override
     public List<Emote> getCustomEmotes() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes?broadcaster_id=" + getUser().getId(),
-                null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes?broadcaster_id=" +
+                getUser().getId(), null, this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -191,15 +170,52 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public void update() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Client-ID", bot.getClientId());
-        headers.put("Authorization", "Bearer " + bot.getToken());
+    public void setStreamTitle(String title) {
+        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        headers.put("Content-Type", "application/json");
 
+        Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channels?broadcaster_id=" +
+                getUser().getId(), RequestBody.create("{\"title\":\"" + title + "\"}", null), headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            System.out.println(json.toString(2));
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+        } catch (IOException | JSONException ignored) {
+            // Ignore it: Usually, there is no response.
+        }
+    }
+
+    @Override
+    public void setStreamLanguage(Locale locale) {
+        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        headers.put("Content-Type", "application/json");
+
+        Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channels?broadcaster_id=" +
+                getUser().getId(), RequestBody.create("{\"broadcaster_language\":\"" + locale.getDisplayLanguage() +
+                "\"}", null), headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            System.out.println(json.toString(2));
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+        } catch (IOException | JSONException ignored) {
+            // Ignore it: Usually, there is no response.
+        }
+    }
+
+    @Override
+    public void update() {
         String nameToSearch = EntityUtils.userNameToId(user);
 
         Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null,
-                headers);
+                this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());

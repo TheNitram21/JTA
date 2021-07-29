@@ -39,11 +39,8 @@ public class VideoImpl implements Video {
 
     @Override
     public void update() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + getId(), null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + getId(), null, this.bot
+                .defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
