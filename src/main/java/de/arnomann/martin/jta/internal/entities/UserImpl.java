@@ -40,7 +40,7 @@ public class UserImpl implements User {
     public void update() {
         String nameToSearch = EntityUtils.userNameToId(this);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, this.bot
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, this.bot
                 .defaultGetterHeaders());
 
         try {
@@ -72,7 +72,7 @@ public class UserImpl implements User {
     public Channel getChannel() {
         String nameToSearch = EntityUtils.userNameToId(this);
 
-        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch, null,
+        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch,
             this.bot.defaultGetterHeaders());
 
         try {
@@ -101,7 +101,7 @@ public class UserImpl implements User {
     @Override
     public StreamSchedule getStreamSchedule() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/schedule?broadcaster_id=" + getId(),
-                null, this.bot.defaultGetterHeaders());
+                this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());

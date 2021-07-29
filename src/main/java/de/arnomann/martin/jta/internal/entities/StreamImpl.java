@@ -1,5 +1,7 @@
 package de.arnomann.martin.jta.internal.entities;
 
+import de.arnomann.martin.jta.api.AdLength;
+import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.Game;
@@ -12,7 +14,9 @@ import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.api.entities.Stream;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
+import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -47,7 +51,7 @@ public class StreamImpl implements Stream {
         if(!streamer.isLive().queue())
             throw new JTAException(Helpers.format("User {} has gone offline!", streamer.getUser().getName()));
 
-        Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), null, this.bot
+        Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), this.bot
                 .defaultGetterHeaders());
 
         try {
@@ -76,6 +80,25 @@ public class StreamImpl implements Stream {
     @Override
     public LocalDateTime getWhenStarted() {
         return TimeUtils.twitchTimeToLocalDateTime(json.getString("started_at"));
+    }
+
+    @Override
+    public void startAd(AdLength length) {
+        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        headers.put("Content-Type", "application/json");
+
+        Response response = new Requester(JTA.getClient()).post("https://api.twitch.tv/helix/channels/commercial", RequestBody.create(
+                "{\"broadcaster_type\":\"" + getChannel().getUser().getId() + "\",\"length\":" + length.getLength() + "}", null),
+                headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+        } catch (IOException | JSONException ignored) {
+            // Ignore it.
+        }
     }
 
     @Override

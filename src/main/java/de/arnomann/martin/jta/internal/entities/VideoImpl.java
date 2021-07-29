@@ -38,8 +38,7 @@ public class VideoImpl implements Video {
 
     @Override
     public void update() {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + getId(), null, this.bot
-                .defaultGetterHeaders());
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + getId(), this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -87,7 +86,7 @@ public class VideoImpl implements Video {
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
         } catch (IOException | JSONException ignored) {
-            // Ignore it. Twitch only sends the deleted videos.
+            // Ignore it.
         }
     }
 

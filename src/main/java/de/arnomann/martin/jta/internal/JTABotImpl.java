@@ -61,7 +61,7 @@ public class JTABotImpl implements JTABot {
                         sb.append(" ");
                 }
 
-                Response response = new Requester(JTA.getClient()).request("https://id.twitch.tv/oauth2/token", RequestBody.create(
+                Response response = new Requester(JTA.getClient()).post("https://id.twitch.tv/oauth2/token", RequestBody.create(
                         "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=client_credentials&scopes=" + sb,
                         null), null);
                 accessToken = new JSONObject(response.body().string()).getString("access_token");
@@ -121,7 +121,7 @@ public class JTABotImpl implements JTABot {
     public UserImpl getUserByName(String name) {
         String nameToSearch = EntityUtils.userNameToId(name);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, this
                 .defaultGetterHeaders());
 
         try {
@@ -145,7 +145,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserById(long id) {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?id=" + id, null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?id=" + id, this
                 .defaultGetterHeaders());
 
         try {
@@ -168,7 +168,7 @@ public class JTABotImpl implements JTABot {
     public TeamImpl getTeamByName(String name) {
         String nameToSearch = EntityUtils.teamNameToId(name);
 
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?name=" + nameToSearch, null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?name=" + nameToSearch, this
                 .defaultGetterHeaders());
 
         try {
@@ -188,7 +188,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public TeamImpl getTeamById(long id) {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?id=" + id, null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/teams?id=" + id, this
                 .defaultGetterHeaders());
 
         try {
@@ -208,7 +208,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public VideoImpl getVideoById(long id) {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + id, null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + id, this
                 .defaultGetterHeaders());
 
         try {
@@ -256,7 +256,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public ClipImpl getClipBySlug(String slug) {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/clips?id=" + slug, null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/clips?id=" + slug, this
                 .defaultGetterHeaders());
 
         try {
@@ -285,7 +285,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public List<ChatBadge> getGlobalChatBadges() {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges/global", null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/badges/global", this
                 .defaultGetterHeaders());
 
         try {
@@ -307,7 +307,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public List<Emote> getGlobalEmotes() {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes/global", null, this
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes/global", this
                 .defaultGetterHeaders());
 
         try {
