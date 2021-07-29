@@ -180,8 +180,6 @@ public class ChannelImpl implements Channel {
         try {
             JSONObject json = new JSONObject(response.body().string());
 
-            System.out.println(json.toString(2));
-
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
         } catch (IOException | JSONException ignored) {
@@ -200,8 +198,6 @@ public class ChannelImpl implements Channel {
 
         try {
             JSONObject json = new JSONObject(response.body().string());
-
-            System.out.println(json.toString(2));
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));

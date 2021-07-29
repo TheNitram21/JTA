@@ -24,8 +24,7 @@ public class JTATest {
 
         bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3");
         bot.setChatOAuthToken(chatOAuth);
-        bot.addNeededPermissions(EnumSet.of(Permission.MODERATION_VIEW));
-        bot.setUserAccessToken("6c8tjslqi3gl97znbhdu11x622dzvv");
+        bot.setUserAccessToken("wfegoq0yzxewpsk0oay0bu3wykgtgr");
 
         l = new Logger();
 

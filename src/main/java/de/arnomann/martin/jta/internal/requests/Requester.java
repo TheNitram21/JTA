@@ -82,4 +82,22 @@ public final class Requester {
         }
     }
 
+    public Response put(String url, RequestBody body, Map<String, String> headers) {
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+
+        if(headers != null)
+            headers.forEach(requestBuilder::addHeader);
+
+        requestBuilder.put(body);
+
+        Request request = requestBuilder.build();
+
+        try {
+            return client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
