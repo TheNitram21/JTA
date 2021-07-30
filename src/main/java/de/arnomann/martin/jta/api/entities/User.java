@@ -4,6 +4,7 @@ import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Represents a twitch user.
@@ -33,6 +34,19 @@ public interface User extends Updatable, IDable {
      * @return the schedule.
      */
     StreamSchedule getStreamSchedule();
+
+    /**
+     * Returns a list containing all followed channels.
+     * @return the follows.
+     */
+    List<Channel> getFollows();
+
+    /**
+     * Returns a list containing all blocked users.
+     * @return the blocked users.
+     * @scopes user:read:blocked_users
+     */
+    List<User> getBlockedUsers();
 
     /**
      * Returns when the user was created.

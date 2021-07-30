@@ -208,7 +208,7 @@ public class ChannelImpl implements Channel {
 
             return list;
         } catch (IOException e) {
-            throw new JTAException("Error while trying to read JSON of channel emotes.", e);
+            throw new JTAException("Error while trying to read JSON of banned users.", e);
         }
     }
 

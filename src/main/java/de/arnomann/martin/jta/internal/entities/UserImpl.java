@@ -21,7 +21,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class UserImpl implements User {
@@ -112,6 +114,50 @@ public class UserImpl implements User {
             return new StreamScheduleImpl(this.bot, json.getJSONObject("data"), this);
         } catch (IOException e) {
             throw new JTAException("Couldn't update stream schedule", e);
+        }
+    }
+
+    @Override
+    public List<Channel> getFollows() {
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users/follows?first=100&from_id=" +
+                getId(), this.bot.defaultGetterHeaders());
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<Channel> list = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                list.add(this.bot.getUserByName(((JSONObject) obj).getString("to_name")).getChannel());
+
+            return list;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of follows.", e);
+        }
+    }
+
+    @Override
+    public List<User> getBlockedUsers() {
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users/blocks?broadcaster_id=" +
+                getId(), this.bot.defaultSetterHeaders());
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<User> list = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                list.add(this.bot.getUserByName(((JSONObject) obj).getString("display_name")));
+
+            return list;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of follows.", e);
         }
     }
 
