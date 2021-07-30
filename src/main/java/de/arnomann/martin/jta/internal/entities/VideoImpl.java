@@ -13,12 +13,11 @@ import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
 
 public class VideoImpl implements Video {
 
@@ -39,11 +38,7 @@ public class VideoImpl implements Video {
 
     @Override
     public void update() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + getId(), null, headers);
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/videos?id=" + getId(), this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -78,6 +73,21 @@ public class VideoImpl implements Video {
     @Override
     public UpdateAction<Long> getViews() {
         return new UpdateAction<>(this, () -> json.getLong("view_count"));
+    }
+
+    @Override
+    public void delete() {
+        Response response = new Requester(JTA.getClient()).delete("https://api.twitch.tv/helix/videos?id=" + getId(), null, this.bot
+                .defaultSetterHeaders());
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+        } catch (IOException | JSONException ignored) {
+            // Ignore it.
+        }
     }
 
     @Override

@@ -16,9 +16,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class StreamScheduleImpl implements StreamSchedule {
 
@@ -52,12 +50,8 @@ public class StreamScheduleImpl implements StreamSchedule {
 
     @Override
     public void update() {
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + bot.getToken());
-        headers.put("Client-ID", bot.getClientId());
-
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/schedule?broadcaster_id=" + getStreamer().getId(),
-                null, headers);
+                this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());

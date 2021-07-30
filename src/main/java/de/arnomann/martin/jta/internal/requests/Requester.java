@@ -22,16 +22,31 @@ public final class Requester {
         this(JTA.getClient());
     }
 
-    public Response request(String url, RequestBody body, Map<String, String> headers) {
+    public Response request(String url, Map<String, String> headers) {
         Request.Builder requestBuilder = new Request.Builder().url(url);
 
         if(headers != null)
             headers.forEach(requestBuilder::addHeader);
 
-        if(body != null)
-            requestBuilder.post(body);
-        else
-            requestBuilder.get();
+        requestBuilder.get();
+
+        Request request = requestBuilder.build();
+
+        try {
+            return client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Response post(String url, @NotNull RequestBody body, Map<String, String> headers) {
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+
+        if(headers != null)
+            headers.forEach(requestBuilder::addHeader);
+
+        requestBuilder.post(body);
 
         Request request = requestBuilder.build();
 
@@ -71,6 +86,24 @@ public final class Requester {
             headers.forEach(requestBuilder::addHeader);
 
         requestBuilder.patch(body);
+
+        Request request = requestBuilder.build();
+
+        try {
+            return client.newCall(request).execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Response put(String url, RequestBody body, Map<String, String> headers) {
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+
+        if(headers != null)
+            headers.forEach(requestBuilder::addHeader);
+
+        requestBuilder.put(body);
 
         Request request = requestBuilder.build();
 

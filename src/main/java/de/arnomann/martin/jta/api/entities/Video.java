@@ -34,6 +34,12 @@ public interface Video extends IDable, Updatable {
     UpdateAction<Long> getViews();
 
     /**
+     * Deletes the video.
+     * @scopes channel:manage:videos
+     */
+    void delete();
+
+    /**
      * Returns when the video was created.
      * @return the creation time.
      */

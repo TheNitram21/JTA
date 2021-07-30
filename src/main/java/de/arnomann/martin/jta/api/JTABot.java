@@ -5,6 +5,7 @@ import de.arnomann.martin.jta.api.events.Listener;
 
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A bot.
@@ -26,6 +27,18 @@ public interface JTABot {
     String getToken();
 
     /**
+     * Sets the user access token. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
+     * @param userToken the user access token.
+     */
+    void setUserAccessToken(String userToken);
+
+    /**
+     * Returns the user access token.
+     * @return the user access token.
+     */
+    String getUserAccessToken();
+
+    /**
      * Returns the client id.
      *
      * @return the client id
@@ -37,6 +50,18 @@ public interface JTABot {
      * @param redirectUri the redirect uri.
      */
     void setRedirectUri(String redirectUri);
+
+    /**
+     * Returns the default getter headers (Client-ID and Access Token).
+     * @return the default getter headers.
+     */
+    Map<String, String> defaultGetterHeaders();
+
+    /**
+     * Returns the default setter headers (Client-ID and User Access Token). <b>In most cases, you need to add an "Content-Type" header to the map.</b>
+     * @return the default setter headers.
+     */
+    Map<String, String> defaultSetterHeaders();
 
     /**
      * Stops the bot.

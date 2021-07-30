@@ -24,7 +24,7 @@ public class JTATest {
 
         bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3");
         bot.setChatOAuthToken(chatOAuth);
-        bot.addNeededPermissions(EnumSet.of(Permission.USER_MANAGE_FOLLOWS, Permission.USER_MANAGE_BLOCKED_USERS));
+        bot.setUserAccessToken("wfegoq0yzxewpsk0oay0bu3wykgtgr");
 
         l = new Logger();
 
@@ -52,6 +52,7 @@ public class JTATest {
         try {
             Team team = bot.getTeamByName("CLASSIFIED");
             List<User> teamMembers = team.getMembers().queue();
+            System.out.println(Arrays.toString(teamMembers.toArray()));
         } catch(Exception e) {
             e.printStackTrace();
         }
