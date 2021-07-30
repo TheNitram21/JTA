@@ -67,6 +67,20 @@ public interface Channel extends Updatable, IDable {
     List<Emote> getCustomEmotes();
 
     /**
+     * Returns a list containing all channel moderators.
+     * @return the moderators.
+     * @scopes moderation:read
+     */
+    List<User> getModerators();
+
+    /**
+     * Returns a list containing all banned users.
+     * @return the banned users.
+     * @scopes moderation:read
+     */
+    List<User> getBannedUsers();
+
+    /**
      * Sets the title of the stream.
      * @param title the new title.
      * @scopes channel:manage:broadcast
