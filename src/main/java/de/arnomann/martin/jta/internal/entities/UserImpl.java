@@ -56,7 +56,7 @@ public class UserImpl implements User {
                 this.json = jsonArrayData.getJSONObject(0);
             }
         } catch (JSONException | IOException e) {
-            throw new JTAException("Error while trying to read JSON of channel.", e);
+            throw new JTAException("Error while trying to update JSON of user.", e);
         }
     }
 
@@ -157,7 +157,7 @@ public class UserImpl implements User {
 
             return list;
         } catch (IOException e) {
-            throw new JTAException("Error while trying to read JSON of follows.", e);
+            throw new JTAException("Error while trying to read JSON of blocks.", e);
         }
     }
 
