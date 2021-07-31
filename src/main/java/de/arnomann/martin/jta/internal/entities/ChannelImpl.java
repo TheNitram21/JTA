@@ -2,6 +2,7 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
+import de.arnomann.martin.jta.api.PredictionState;
 import de.arnomann.martin.jta.api.entities.*;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
@@ -246,6 +247,52 @@ public class ChannelImpl implements Channel {
                 throw new ErrorResponseException(new ErrorResponse(json));
         } catch (IOException | JSONException ignored) {
             // Ignore it: Usually, there is no response.
+        }
+    }
+
+    @Override
+    public void startPrediction(String title, String answerOne, String answerTwo, int time) {
+        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        headers.put("Content-Type", "application/json");
+
+        Response response = new Requester(JTA.getClient()).post("https://api.twitch.tv/helix/predictions", RequestBody.create(
+                "{\"broadcaster_id\":\"" + getUser().getId() + "\",\"title\":\"" + title + "\",\"outcomes\":[{\"title\":\"" + answerOne +
+                        "\"},{\"title\":\"" + answerTwo + "\"}],\"prediction_window\":" + time + "}", null), headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+        } catch (IOException | JSONException ignored) {
+            // Ignore it.
+        }
+    }
+
+    @Override
+    public void startPoll(String title, String[] choices, int time) {
+        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        headers.put("Content-Type", "application/json");
+
+        StringBuilder choicesJSON = new StringBuilder("[");
+        for(int i = 0; i < choices.length; i++) {
+            choicesJSON.append("{\"title\":\"" + choices[i] + "\"}");
+            if(i + 1 < choices.length)
+                choicesJSON.append(",");
+        }
+        choicesJSON.append("]");
+
+        Response response = new Requester(JTA.getClient()).post("https://api.twitch.tv/helix/predictions", RequestBody.create(
+                "{\"broadcaster_id\":\"" + getUser().getId() + "\",\"title\":\"" + title + "\",\"choices\":" + choices +
+                ",\"duration\":" + time + "}", null), headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+        } catch (IOException | JSONException ignored) {
+            // Ignore it.
         }
     }
 

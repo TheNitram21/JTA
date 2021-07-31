@@ -1,5 +1,6 @@
 package de.arnomann.martin.jta.api.entities;
 
+import de.arnomann.martin.jta.api.PredictionState;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 
@@ -93,5 +94,24 @@ public interface Channel extends Updatable, IDable {
      * @scopes channel:manage:broadcast
      */
     void setStreamLanguage(Locale locale);
+
+    /**
+     * Starts a prediction in this channel.
+     * @param title the title.
+     * @param answerOne the first answer.
+     * @param answerTwo the second answer.
+     * @param time the time of the prediction in seconds. Maximal 1800.
+     * @scopes channel:manage:predictions
+     */
+    void startPrediction(String title, String answerOne, String answerTwo, int time);
+
+    /**
+     * Starts a poll in this channel.
+     * @param title the title.
+     * @param choices the choices. Array must not be bigger than 5.
+     * @param time the duration of the poll in seconds. Maximal 1800.
+     * @scopes channel:manage:polls
+     */
+    void startPoll(String title, String[] choices, int time);
 
 }
