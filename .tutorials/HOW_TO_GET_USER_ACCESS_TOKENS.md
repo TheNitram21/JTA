@@ -5,6 +5,8 @@ How can you fix this? You need to set an `User Access token`. To get that you ne
 
 `https://id.twitch.tv/oauth2/authorize?client_id=<CLIENTID>&redirect_uri=<REDIRECTURI>&response_type=token&scope=SCOPES`
 
+By the way, you can also just call `JTABot#getUserAccessTokenLink()` after setting the redirect uri using `JTABot#setRedirectUri(String)` and the needed scopes using `JTABot#setNeededPermissions(EnumSet<Permission>)` and then opening the link the method returns.
+
 After opening the page, if done correctly, you should get redirected to a web page with the following pattern:
 `<REDIRECTURI>#access_token=<ACCESSTOKEN>`
 
