@@ -26,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 
 public class JTABotImpl implements JTABot {
@@ -71,6 +73,26 @@ public class JTABotImpl implements JTABot {
             }
         }
         return accessToken;
+    }
+
+    @Override
+    public URL getUserAccessTokenLink() {
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < neededPermissions.size(); i++) {
+            sb.append(neededPermissions.get(i));
+            if((i + 1) != neededPermissions.size())
+                sb.append(" ");
+        }
+
+        String BASELINK = "https://id.twitch.tv/oauth2/authorize?client_id={}&redirect_uri={}&response_type=token&scope={}";
+
+        try {
+            return new URL(Helpers.format(BASELINK, getClientId(), redirectUri, sb.toString()));
+        } catch (MalformedURLException ignored) {
+            // WILL NEVER HAPPEN
+            return null;
+        }
     }
 
     @Override
