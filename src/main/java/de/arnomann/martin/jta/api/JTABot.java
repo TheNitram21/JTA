@@ -3,6 +3,7 @@ package de.arnomann.martin.jta.api;
 import de.arnomann.martin.jta.api.entities.*;
 import de.arnomann.martin.jta.api.events.Listener;
 
+import java.net.URL;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,12 @@ public interface JTABot {
      * @return the new token.
      */
     String getToken();
+
+    /**
+     * Returns the user access token link to using the needed permissions set with {@link JTABot#addNeededPermissions(EnumSet)} and {@link JTABot#removeNeededPermissions(EnumSet)}.
+     * @return the generated link as {@link java.net.URL}.
+     */
+    URL getUserAccessTokenLink();
 
     /**
      * Sets the user access token. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
