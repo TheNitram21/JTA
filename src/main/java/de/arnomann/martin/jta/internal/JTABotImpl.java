@@ -80,7 +80,7 @@ public class JTABotImpl implements JTABot {
         StringBuilder sb = new StringBuilder();
 
         for(int i = 0; i < neededPermissions.size(); i++) {
-            sb.append(neededPermissions.get(i));
+            sb.append(neededPermissions.get(i).toTwitchScope());
             if((i + 1) != neededPermissions.size())
                 sb.append(" ");
         }
