@@ -16,7 +16,9 @@ public interface Chat {
      * @param console Whether there should be console output or not. Should be deactivated in big chats.
      * @throws IrcException If the connection failed.
      * @throws IOException If the bot is already connected.
+     * @deprecated Instead, use {@linkplain Chat#connect(boolean)} after setting the chat oauth token {@linkplain JTABot#setChatOAuthToken(String)}.
      */
+    @Deprecated(since = "v2.1.0_22", forRemoval = true)
     void connect(String oauth, boolean console) throws IOException, IrcException;
 
     /**
@@ -24,7 +26,6 @@ public interface Chat {
      * @param console Whether there should be console output or not. Should be deactivated in big chats.
      * @throws IrcException If the connection failed.
      * @throws IOException If the bot is already connected.
-     * @see Chat#connect(String, boolean)
      */
     void connect(boolean console) throws IOException, IrcException;
 

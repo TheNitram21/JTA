@@ -27,7 +27,7 @@ public class MessageSenderBot extends PircBot {
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         try {
             Chat c = bot.getUserByName(channelName).getChannel().getChat();
-            c.connect(bot.getChatOAuthToken(), false);
+            c.connect(false);
             if (message.startsWith("/"))
                 EventHandler.onEvent(new SlashCommandEvent(bot, new MessageImpl(bot, message.substring(1), bot.getUserByName(sender),
                         c)));

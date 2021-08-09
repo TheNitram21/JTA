@@ -10,7 +10,7 @@ public class EventListener implements Listener {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         try {
-            event.getMessage().getChannel().connect(JTATest.chatOAuth, false);
+            event.getMessage().getChannel().connect(false);
 
             System.out.println(event);
 
