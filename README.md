@@ -8,7 +8,6 @@ A Java Wrapper for the Twitch API.
 2. [Building your first Bot](#building-your-first-bot)
 3. [Sending Messages](#sending-messages)
 4. [Events](#events)
-5. [Clips](#clips)
 6. [Contributing](#contributing)
 
 ## Download
@@ -119,3 +118,6 @@ public static void main(String[] args) {
 
 ## Contributing
 You can find a detailed manual for how to contribute [here](https://www.github.com/NitramMann21/JTA/blob/development/CONTRIBUTING.md).
+
+## Official Guide
+You can find the official guide on my GitHub Pages page, or click [here](https://nitrammann21.github.io/jta/guide/index.html)
