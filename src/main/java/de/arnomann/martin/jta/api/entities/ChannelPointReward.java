@@ -42,4 +42,32 @@ public interface ChannelPointReward extends Updatable {
      */
     UpdateAction<String> getTitle();
 
+    /**
+     * Sets the background color of the reward.
+     * @param color the new color.
+     */
+    void setBackgroundColor(Color color);
+
+    /**
+     * Sets if the reward is enabled.
+     * @param enabled if the reward is enabled.
+     */
+    void setEnabled(boolean enabled);
+
+    /**
+     * Sets the cost of the reward.
+     * @param cost the cost.
+     */
+    void setCost(int cost);
+
+    /**
+     * Sets the title of the reward.
+     * @param title the title.
+     */
+    void setTitle(String title);
+
+    void delete();
+
+
+
 }
