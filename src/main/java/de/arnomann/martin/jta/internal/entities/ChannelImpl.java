@@ -170,6 +170,28 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
+    public List<ChannelPointReward> getChannelPointRewards() {
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/chat/emotes?broadcaster_id=" +
+                getUser().getId(), this.bot.defaultGetterHeaders());
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<ChannelPointReward> list = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                list.add(new ChannelPointRewardImpl(this.bot, (JSONObject) obj, this));
+
+            return list;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of channel point rewards.", e);
+        }
+    }
+
+    @Override
     public List<User> getModerators() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/moderation/moderators?broadcaster_id=" +
                 getUser().getId(), this.bot.defaultGetterHeaders());

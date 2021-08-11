@@ -68,6 +68,13 @@ public interface Channel extends Updatable, IDable {
     List<Emote> getCustomEmotes();
 
     /**
+     * Returns a list containing all channel point rewards.
+     * @return the channel point rewards.
+     * @scopes channel:read:redemptions
+     */
+    List<ChannelPointReward> getChannelPointRewards();
+
+    /**
      * Returns a list containing all channel moderators.
      * @return the moderators.
      * @scopes moderation:read
