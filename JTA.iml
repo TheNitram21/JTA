@@ -15,6 +15,7 @@
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib-common:1.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains.kotlin:kotlin-stdlib:1.4.10" level="project" />
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:13.0" level="project" />
+    <orderEntry type="library" name="Maven: com.neovisionaries:nv-websocket-client:2.14" level="project" />
     <orderEntry type="library" name="Maven: org.json:json:20210307" level="project" />
     <orderEntry type="library" name="Maven: pircbot:pircbot:1.5.0" level="project" />
   </component>
