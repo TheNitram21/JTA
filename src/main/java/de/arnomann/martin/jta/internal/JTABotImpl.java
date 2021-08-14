@@ -103,7 +103,7 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
-    public void setUserAccessToken(Map<User, String> tokens) {
+    public void addUserAccessTokens(Map<User, String> tokens) {
         Checks.notNull(tokens, "User Access Tokens");
 
         tokens.forEach((user, token) -> userAccessTokens.put(user.getId(), token));

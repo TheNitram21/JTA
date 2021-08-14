@@ -44,7 +44,7 @@ public interface JTABot {
      * Adds a list of user access tokens. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
      * @param tokens the tokens.
      */
-    void setUserAccessToken(Map<User, String> tokens);
+    void addUserAccessTokens(Map<User, String> tokens);
 
     /**
      * Returns the user access token of a user.
