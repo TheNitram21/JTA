@@ -64,7 +64,7 @@ public class ChannelPointRewardImpl implements ChannelPointReward {
 
     @Override
     public void setBackgroundColor(Color color) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getChannel().getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=" +
@@ -83,7 +83,7 @@ public class ChannelPointRewardImpl implements ChannelPointReward {
 
     @Override
     public void setEnabled(boolean enabled) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getChannel().getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=" +
@@ -102,7 +102,7 @@ public class ChannelPointRewardImpl implements ChannelPointReward {
 
     @Override
     public void setCost(int cost) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getChannel().getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=" +
@@ -121,7 +121,7 @@ public class ChannelPointRewardImpl implements ChannelPointReward {
 
     @Override
     public void setTitle(String title) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getChannel().getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=" +
@@ -141,7 +141,7 @@ public class ChannelPointRewardImpl implements ChannelPointReward {
     @Override
     public void delete() {
         Response response = new Requester(JTA.getClient()).delete("https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=" +
-                getChannel().getUser().getId() + "&id=" + getId(), null, this.bot.defaultSetterHeaders());
+                getChannel().getUser().getId() + "&id=" + getId(), null, this.bot.defaultSetterHeaders(getChannel().getUser()));
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -156,7 +156,7 @@ public class ChannelPointRewardImpl implements ChannelPointReward {
     @Override
     public void update() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/channel_points/custom_rewards?broadcaster_id=" +
-                getChannel().getUser().getId() + "&id=" + getId(), this.bot.defaultSetterHeaders());
+                getChannel().getUser().getId() + "&id=" + getId(), this.bot.defaultSetterHeaders(getChannel().getUser()));
 
         try {
             JSONObject json = new JSONObject(response.body().string());

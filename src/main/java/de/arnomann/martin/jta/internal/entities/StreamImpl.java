@@ -83,7 +83,7 @@ public class StreamImpl implements Stream {
 
     @Override
     public void startAd(AdLength length) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getChannel().getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).post("https://api.twitch.tv/helix/channels/commercial", RequestBody.create(

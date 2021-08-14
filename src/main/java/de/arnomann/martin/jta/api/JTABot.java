@@ -34,16 +34,24 @@ public interface JTABot {
     URL getUserAccessTokenLink();
 
     /**
-     * Sets the user access token. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
+     * Adds a user access token. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
+     * @param user the user.
      * @param userToken the user access token.
      */
-    void setUserAccessToken(String userToken);
+    void setUserAccessToken(User user, String userToken);
 
     /**
-     * Returns the user access token.
+     * Adds a list of user access tokens. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
+     * @param tokens the tokens.
+     */
+    void setUserAccessToken(Map<User, String> tokens);
+
+    /**
+     * Returns the user access token of a user.
+     * @param user the user to get the access token from.
      * @return the user access token.
      */
-    String getUserAccessToken();
+    String getUserAccessToken(User user);
 
     /**
      * Returns the client id.
@@ -66,9 +74,10 @@ public interface JTABot {
 
     /**
      * Returns the default setter headers (Client-ID and User Access Token). <b>In most cases, you need to add an "Content-Type" header to the map.</b>
+     * @param user the user which will be managed.
      * @return the default setter headers.
      */
-    Map<String, String> defaultSetterHeaders();
+    Map<String, String> defaultSetterHeaders(User user);
 
     /**
      * Stops the bot.

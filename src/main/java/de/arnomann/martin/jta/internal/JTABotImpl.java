@@ -35,11 +35,11 @@ public class JTABotImpl implements JTABot {
     private final String clientId;
     private final String clientSecret;
     private String accessToken = "";
-    private long tokenExpiresWhen = 0L;
+    private long tokenExpiresWhen = -1L;
     private String redirectUri = "http://localhost";
     private String oAuthToken = "";
     private final List<Permission> neededPermissions = new ArrayList<>();
-    private String userAccessToken = "";
+    private final Map<Long, String> userAccessTokens = new HashMap<>();
 
     public JTABotImpl(String clientId, String clientSecret) {
         this.clientId = clientId;
@@ -85,10 +85,10 @@ public class JTABotImpl implements JTABot {
                 sb.append(" ");
         }
 
-        String BASELINK = "https://id.twitch.tv/oauth2/authorize?client_id={}&redirect_uri={}&response_type=token&scope={}";
+        String BASE_LINK = "https://id.twitch.tv/oauth2/authorize?client_id={}&redirect_uri={}&response_type=token&scope={}";
 
         try {
-            return new URL(Helpers.format(BASELINK, getClientId(), redirectUri, sb.toString()));
+            return new URL(Helpers.format(BASE_LINK, getClientId(), redirectUri, sb.toString()));
         } catch (MalformedURLException ignored) {
             // WILL NEVER HAPPEN
             return null;
@@ -96,14 +96,22 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
-    public void setUserAccessToken(String userToken) {
+    public void setUserAccessToken(User user, String userToken) {
+        Checks.notNull(user, "User");
         Checks.notEmpty(userToken, "User Access Token");
-        this.userAccessToken = userToken;
+        userAccessTokens.put(user.getId(), userToken);
     }
 
     @Override
-    public String getUserAccessToken() {
-        return this.userAccessToken;
+    public void setUserAccessToken(Map<User, String> tokens) {
+        Checks.notNull(tokens, "User Access Tokens");
+
+        tokens.forEach((user, token) -> userAccessTokens.put(user.getId(), token));
+    }
+
+    @Override
+    public String getUserAccessToken(User user) {
+        return userAccessTokens.get(user.getId());
     }
 
     @Override
@@ -125,11 +133,9 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
-    public Map<String, String> defaultSetterHeaders() {
-        Checks.notEmpty(this.userAccessToken, "User Access Token");
-
+    public Map<String, String> defaultSetterHeaders(User user) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + getUserAccessToken());
+        headers.put("Authorization", "Bearer " + getUserAccessToken(user));
         headers.put("Client-ID", getClientId());
         return headers;
     }

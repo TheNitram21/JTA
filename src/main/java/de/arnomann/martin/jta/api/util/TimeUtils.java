@@ -17,7 +17,7 @@ public class TimeUtils {
      * @return the converted local date time.
      */
     public static LocalDateTime twitchTimeToLocalDateTime(String twitchTime) {
-        return LocalDateTime.parse(twitchTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'").withZone(ZoneId.of("UTC")));
+        return LocalDateTime.parse(twitchTime, DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneId.of("UTC")));
     }
 
 }

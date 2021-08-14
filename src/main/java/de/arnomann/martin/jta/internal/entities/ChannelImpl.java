@@ -237,7 +237,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void setStreamTitle(String title) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channels?broadcaster_id=" +
@@ -255,7 +255,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void setStreamLanguage(Locale locale) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channels?broadcaster_id=" +
@@ -274,7 +274,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void startPrediction(String title, String answerOne, String answerTwo, int time) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).post("https://api.twitch.tv/helix/predictions", RequestBody.create(
@@ -293,7 +293,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void startPoll(String title, String[] choices, int time) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         StringBuilder choicesJSON = new StringBuilder("[");
