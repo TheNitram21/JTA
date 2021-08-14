@@ -2,7 +2,6 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
 import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.PredictionState;
 import de.arnomann.martin.jta.api.entities.*;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
