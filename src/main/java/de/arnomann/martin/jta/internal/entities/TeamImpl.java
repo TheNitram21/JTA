@@ -30,7 +30,7 @@ public class TeamImpl implements Team {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 

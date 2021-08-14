@@ -3,7 +3,7 @@ package de.arnomann.martin.jta.api.entities;
 /**
  * Represents a twitch chat emote.
  */
-public interface Emote extends IDable {
+public interface Emote extends IDable<Long> {
 
     /**
      * Returns the name of the emote (e.g.: {@code Kappa})

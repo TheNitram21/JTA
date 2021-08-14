@@ -61,7 +61,7 @@ public class UserImpl implements User {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 

@@ -101,7 +101,7 @@ public class StreamImpl implements Stream {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("_id");
     }
 

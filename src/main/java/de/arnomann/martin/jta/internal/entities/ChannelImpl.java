@@ -342,7 +342,7 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 

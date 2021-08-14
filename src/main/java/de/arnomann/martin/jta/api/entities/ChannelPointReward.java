@@ -7,19 +7,13 @@ import java.awt.Color;
 /**
  * Represents a twitch channel point reward.
  */
-public interface ChannelPointReward extends Updatable {
+public interface ChannelPointReward extends Updatable, IDable<String> {
 
     /**
      * Returns the channel of this channel point reward.
      * @return the channel.
      */
     Channel getChannel();
-
-    /**
-     * Returns the id of the reward.
-     * @return the id.
-     */
-    String getId();
 
     /**
      * Returns the background color of the reward.

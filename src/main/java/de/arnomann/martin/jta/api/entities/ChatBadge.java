@@ -3,13 +3,7 @@ package de.arnomann.martin.jta.api.entities;
 /**
  * Represents a twitch chat badge.
  */
-public interface ChatBadge {
-
-    /**
-     * Returns the id of the chat badge.
-     * @return the id.
-     */
-    String getId();
+public interface ChatBadge extends IDable<String> {
 
     /**
      * Returns the image url of the chat badge.

@@ -32,7 +32,7 @@ public class VideoImpl implements Video {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 

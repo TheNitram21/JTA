@@ -38,7 +38,7 @@ public class EmoteImpl implements Emote {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 
