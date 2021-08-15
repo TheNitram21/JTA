@@ -1,24 +1,21 @@
 package de.arnomann.martin.jta.internal.entities;
 
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.Channel;
-import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.entities.Chat;
-import de.arnomann.martin.jta.api.entities.User;
+import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.util.EntityUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import org.jibble.pircbot.IrcException;
-import org.jibble.pircbot.NickAlreadyInUseException;
 
 import java.io.IOException;
 
 public class ChatImpl implements Chat {
 
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private MessageSenderBot msgbot;
-    private final Channel channel;
+    private final ChannelImpl channel;
     private boolean isConnected = false;
 
-    public ChatImpl(Channel channel, JTABot bot) {
+    public ChatImpl(ChannelImpl channel, JTABotImpl bot) {
         this.bot = bot;
         this.channel = channel;
     }
@@ -47,7 +44,7 @@ public class ChatImpl implements Chat {
     }
 
     @Override
-    public Channel getChannel() {
+    public ChannelImpl getChannel() {
         return channel;
     }
 

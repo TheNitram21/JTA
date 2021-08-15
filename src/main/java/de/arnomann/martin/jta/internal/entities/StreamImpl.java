@@ -2,17 +2,16 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.AdLength;
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.Game;
+import de.arnomann.martin.jta.api.entities.Stream;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
+import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.TimeUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
-import de.arnomann.martin.jta.api.entities.Stream;
-import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -25,18 +24,18 @@ import java.util.Map;
 
 public class StreamImpl implements Stream {
     
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private final ChannelImpl streamer;
     private JSONObject json;
     
-    public StreamImpl(JTABot bot, ChannelImpl streamer, JSONObject json) {
+    public StreamImpl(JTABotImpl bot, ChannelImpl streamer, JSONObject json) {
         this.bot = bot;
         this.streamer = streamer;
         this.json = json;
     }
     
     @Override
-    public Channel getChannel() {
+    public ChannelImpl getChannel() {
         return streamer;
     }
 

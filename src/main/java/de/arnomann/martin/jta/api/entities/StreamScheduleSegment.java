@@ -1,7 +1,5 @@
 package de.arnomann.martin.jta.api.entities;
 
-import de.arnomann.martin.jta.api.requests.UpdateAction;
-
 import java.time.LocalDateTime;
 
 /**

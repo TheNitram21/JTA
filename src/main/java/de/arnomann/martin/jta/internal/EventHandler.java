@@ -1,9 +1,9 @@
 package de.arnomann.martin.jta.internal;
 
 import de.arnomann.martin.jta.api.events.Event;
+import de.arnomann.martin.jta.api.events.Listener;
 import de.arnomann.martin.jta.api.events.MessageReceivedEvent;
 import de.arnomann.martin.jta.api.events.SlashCommandEvent;
-import de.arnomann.martin.jta.api.events.Listener;
 
 import java.util.ArrayList;
 import java.util.List;

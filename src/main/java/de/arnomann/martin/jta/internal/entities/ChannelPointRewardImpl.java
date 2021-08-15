@@ -1,13 +1,12 @@
 package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.ChannelPointReward;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.RequestBody;
@@ -17,23 +16,22 @@ import org.json.JSONObject;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ChannelPointRewardImpl implements ChannelPointReward {
 
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private JSONObject json;
-    private final Channel channel;
+    private final ChannelImpl channel;
 
-    public ChannelPointRewardImpl(JTABot bot, JSONObject json, Channel channel) {
+    public ChannelPointRewardImpl(JTABotImpl bot, JSONObject json, ChannelImpl channel) {
         this.bot = bot;
         this.json = json;
         this.channel = channel;
     }
 
     @Override
-    public Channel getChannel() {
+    public ChannelImpl getChannel() {
         return channel;
     }
 

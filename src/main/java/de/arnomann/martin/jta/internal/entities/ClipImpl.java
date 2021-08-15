@@ -1,21 +1,20 @@
 package de.arnomann.martin.jta.internal.entities;
 
-import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Clip;
-import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.util.TimeUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 
 public class ClipImpl implements Clip {
 
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private final JSONObject json;
-    private final User creator;
-    private final User channel;
+    private final UserImpl creator;
+    private final UserImpl channel;
 
-    public ClipImpl(JTABot bot, JSONObject json, User creator, User channel) {
+    public ClipImpl(JTABotImpl bot, JSONObject json, UserImpl creator, UserImpl channel) {
         this.bot = bot;
         this.json = json;
         this.creator = creator;
@@ -33,12 +32,12 @@ public class ClipImpl implements Clip {
     }
 
     @Override
-    public User getCreator() {
+    public UserImpl getCreator() {
         return creator;
     }
 
     @Override
-    public User getChannel() {
+    public UserImpl getChannel() {
         return channel;
     }
 

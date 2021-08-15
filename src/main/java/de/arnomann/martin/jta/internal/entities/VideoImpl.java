@@ -1,14 +1,13 @@
 package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.entities.Video;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.TimeUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
@@ -21,11 +20,11 @@ import java.time.LocalDateTime;
 
 public class VideoImpl implements Video {
 
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private JSONObject json;
-    private final User streamer;
+    private final UserImpl streamer;
 
-    public VideoImpl(JTABot bot, JSONObject json, User streamer) {
+    public VideoImpl(JTABotImpl bot, JSONObject json, UserImpl streamer) {
         this.bot = bot;
         this.json = json;
         this.streamer = streamer;
@@ -56,7 +55,7 @@ public class VideoImpl implements Video {
     }
 
     @Override
-    public User getStreamer() {
+    public UserImpl getStreamer() {
         return streamer;
     }
 

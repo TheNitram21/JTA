@@ -1,7 +1,7 @@
 package de.arnomann.martin.jta.api.entities;
 
-import org.jibble.pircbot.IrcException;
 import de.arnomann.martin.jta.api.JTABot;
+import org.jibble.pircbot.IrcException;
 
 import java.io.IOException;
 

@@ -1,17 +1,16 @@
 package de.arnomann.martin.jta.internal.entities;
 
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.Emote;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import org.json.JSONObject;
 
 public class EmoteImpl implements Emote {
 
-    private final JTABot bot;
-    private final Channel channel;
+    private final JTABotImpl bot;
+    private final ChannelImpl channel;
     private JSONObject json;
 
-    public EmoteImpl(JTABot bot, Channel channel, JSONObject json) {
+    public EmoteImpl(JTABotImpl bot, ChannelImpl channel, JSONObject json) {
         this.bot = bot;
         this.channel = channel;
         this.json = json;
@@ -33,7 +32,7 @@ public class EmoteImpl implements Emote {
     }
 
     @Override
-    public Channel getChannel() {
+    public ChannelImpl getChannel() {
         return isGlobal() ? null : channel;
     }
 

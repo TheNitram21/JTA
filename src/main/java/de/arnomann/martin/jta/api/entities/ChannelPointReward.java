@@ -2,7 +2,7 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * Represents a twitch channel point reward.

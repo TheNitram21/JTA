@@ -1,7 +1,7 @@
 package de.arnomann.martin.jta.api.entities;
 
-import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
+import de.arnomann.martin.jta.api.requests.UpdateAction;
 
 import java.util.List;
 import java.util.Locale;
