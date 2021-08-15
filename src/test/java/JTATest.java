@@ -36,6 +36,8 @@ public class JTATest {
 
         bot.setUserAccessToken(nitram, "q1433wkx68c3gbl419olg0bitdg4j8");
 
+        System.out.println(bot.getTokenPermissions(bot.getUserAccessToken(nitram)));
+
         l = new Logger();
 
         bot.registerEventListeners(new EventListener());

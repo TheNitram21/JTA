@@ -114,6 +114,30 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
+    public EnumSet<Permission> getTokenPermissions(String token) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "OAuth " + token);
+
+        Response response = new Requester(JTA.getClient()).request("https://id.twitch.tv/oauth2/validate", headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            EnumSet<Permission> permissions = EnumSet.noneOf(Permission.class);
+
+            for(Object obj : json.getJSONArray("scopes"))
+                permissions.add(Permission.getByScope((String) obj));
+
+            return permissions;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of token", e);
+        }
+    }
+
+    @Override
     public String getClientId() {
         return clientId;
     }

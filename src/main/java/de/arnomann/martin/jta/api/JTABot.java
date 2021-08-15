@@ -54,6 +54,13 @@ public interface JTABot {
     String getUserAccessToken(User user);
 
     /**
+     * Returns a list containing all permissions the token has.
+     * @param token the token.
+     * @return the permissions.
+     */
+    EnumSet<Permission> getTokenPermissions(String token);
+
+    /**
      * Returns the client id.
      *
      * @return the client id
