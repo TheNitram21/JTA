@@ -181,6 +181,10 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserById(long id) {
+        for(UserImpl user : cachedUsers)
+            if(user.getId().equals(id))
+                return user;
+
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?id=" + id, this
                 .defaultGetterHeaders());
 
@@ -193,7 +197,9 @@ public class JTABotImpl implements JTABot {
             if(json.getJSONArray("data").isEmpty())
                 throw new JTAException("No user with id " + id + " found!");
 
-            return new UserImpl(json, this);
+            UserImpl user = new UserImpl(json, this);
+            cachedUsers.add(user);
+            return user;
         } catch (JSONException | IOException e) {
             JTA.getLogger().error(Helpers.format("No results: No user with id {} found.", id));
         }
