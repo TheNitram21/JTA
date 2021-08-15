@@ -135,12 +135,12 @@ public class JTABotImpl implements JTABot {
 
             if(json.has("message") && json.has("status") && json.getString("message").equals("invalid access token") && json
                     .getInt("status") == 401)
-                return true;
+                return false;
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
 
-            return false;
+            return true;
         } catch (IOException e) {
             throw new JTAException("Error while trying to read JSON of token", e);
         }
