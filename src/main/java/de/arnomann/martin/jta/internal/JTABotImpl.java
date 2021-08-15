@@ -41,6 +41,8 @@ public class JTABotImpl implements JTABot {
     private final List<Permission> neededPermissions = new ArrayList<>();
     private final Map<Long, String> userAccessTokens = new HashMap<>();
 
+    private final List<UserImpl> cachedUsers = new ArrayList<>();
+
     public JTABotImpl(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
@@ -147,6 +149,10 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserByName(String name) {
+        for(UserImpl user : cachedUsers)
+            if(EntityUtils.userNameToId(user.getName()).equals(EntityUtils.userNameToId(name)))
+                return user;
+
         String nameToSearch = EntityUtils.userNameToId(name);
 
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, this
@@ -163,7 +169,9 @@ public class JTABotImpl implements JTABot {
 
             JSONArray jsonArrayData = json.getJSONArray("data");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(name)) {
-                return new UserImpl(jsonArrayData.getJSONObject(0), this);
+                UserImpl user = new UserImpl(jsonArrayData.getJSONObject(0), this);
+                cachedUsers.add(user);
+                return user;
             }
         } catch (JSONException | IOException e) {
             throw new JTAException("Error while reading JSON", e);

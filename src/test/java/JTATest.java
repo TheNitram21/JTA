@@ -29,6 +29,10 @@ public class JTATest {
         System.out.println(bot.getUserAccessTokenLink());
 
         nitram = bot.getUserByName("TheNitram21");
+        User nitramTheSecond = bot.getUserByName("TheNitram21");
+        if(nitram.equals(nitramTheSecond))
+            System.out.println("User-Caching is working!");
+        System.out.println(nitram.hashCode() + System.lineSeparator() + nitramTheSecond.hashCode());
 
         bot.setUserAccessToken(nitram, "q1433wkx68c3gbl419olg0bitdg4j8");
 
