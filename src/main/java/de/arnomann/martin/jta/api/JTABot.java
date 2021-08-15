@@ -14,13 +14,6 @@ import java.util.Map;
 public interface JTABot {
 
     /**
-     * Checks, whether the token is valid or not.
-     *
-     * @return whether the token is valid or not.
-     */
-    boolean isTokenValid();
-
-    /**
      * "Generates" a new token. <b>The token should not be saved in a variable because tokens get invalidated after a minute.</b>
      *
      * @return the new token.
@@ -52,6 +45,13 @@ public interface JTABot {
      * @return the user access token.
      */
     String getUserAccessToken(User user);
+
+    /**
+     * Returns whether the token is valid.
+     * @param token the token.
+     * @return if the token is valid.
+     */
+    boolean isTokenValid(String token);
 
     /**
      * Returns a list containing all permissions the token has.

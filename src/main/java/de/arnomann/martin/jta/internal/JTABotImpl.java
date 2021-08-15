@@ -45,7 +45,6 @@ public class JTABotImpl implements JTABot {
         this.clientSecret = clientSecret;
     }
 
-    @Override
     public boolean isTokenValid() {
         return tokenExpiresWhen >= System.currentTimeMillis() + 10000;
     }
@@ -98,6 +97,10 @@ public class JTABotImpl implements JTABot {
     public void setUserAccessToken(User user, String userToken) {
         Checks.notNull(user, "User");
         Checks.notEmpty(userToken, "User Access Token");
+
+        if(!isTokenValid(userToken))
+            throw new JTAException("Access Token is not valid!");
+
         userAccessTokens.put(user.getId(), userToken);
     }
 
@@ -105,7 +108,12 @@ public class JTABotImpl implements JTABot {
     public void addUserAccessTokens(Map<User, String> tokens) {
         Checks.notNull(tokens, "User Access Tokens");
 
-        tokens.forEach((user, token) -> userAccessTokens.put(user.getId(), token));
+        tokens.forEach((user, token) -> {
+            if(!isTokenValid(token))
+                throw new JTAException("Access Token of user " + user.getName() + " is not valid!");
+
+            userAccessTokens.put(user.getId(), token);
+        });
     }
 
     @Override
@@ -114,7 +122,7 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
-    public EnumSet<Permission> getTokenPermissions(String token) {
+    public boolean isTokenValid(String token) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "OAuth " + token);
 
@@ -122,6 +130,36 @@ public class JTABotImpl implements JTABot {
 
         try {
             JSONObject json = new JSONObject(response.body().string());
+
+            System.out.println(json.toString(2));
+
+            if(json.has("message") && json.has("status") && json.getString("message").equals("invalid access token") && json
+                    .getInt("status") == 401)
+                return true;
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            return false;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of token", e);
+        }
+    }
+
+    @Override
+    public EnumSet<Permission> getTokenPermissions(String token) {
+        if(!isTokenValid(token))
+            throw new JTAException("Access Token is not valid!");
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "OAuth " + token);
+
+        Response response = new Requester(JTA.getClient()).request("https://id.twitch.tv/oauth2/validate", headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            System.out.println(json.toString(2));
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
