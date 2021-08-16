@@ -74,19 +74,6 @@ public interface JTABot {
     void setRedirectUri(String redirectUri);
 
     /**
-     * Returns the default getter headers (Client-ID and Access Token).
-     * @return the default getter headers.
-     */
-    Map<String, String> defaultGetterHeaders();
-
-    /**
-     * Returns the default setter headers (Client-ID and User Access Token). <b>In most cases, you need to add an "Content-Type" header to the map.</b>
-     * @param user the user which will be managed.
-     * @return the default setter headers.
-     */
-    Map<String, String> defaultSetterHeaders(User user);
-
-    /**
      * Stops the bot.
      */
     void stop();

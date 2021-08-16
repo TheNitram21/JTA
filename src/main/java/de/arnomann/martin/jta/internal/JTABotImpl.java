@@ -185,7 +185,6 @@ public class JTABotImpl implements JTABot {
         if(!redirectUri.isBlank()) this.redirectUri = redirectUri;
     }
 
-    @Override
     public Map<String, String> defaultGetterHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getToken());
@@ -193,7 +192,6 @@ public class JTABotImpl implements JTABot {
         return headers;
     }
 
-    @Override
     public Map<String, String> defaultSetterHeaders(User user) {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getUserAccessToken(user));
