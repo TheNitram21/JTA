@@ -131,8 +131,6 @@ public class JTABotImpl implements JTABot {
         try {
             JSONObject json = new JSONObject(response.body().string());
 
-            System.out.println(json.toString(2));
-
             if(json.has("message") && json.has("status") && json.getString("message").equals("invalid access token") && json
                     .getInt("status") == 401)
                 return false;
@@ -158,8 +156,6 @@ public class JTABotImpl implements JTABot {
 
         try {
             JSONObject json = new JSONObject(response.body().string());
-
-            System.out.println(json.toString(2));
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
