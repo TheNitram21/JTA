@@ -1,20 +1,12 @@
 package de.arnomann.martin.jta.api.entities;
 
-import de.arnomann.martin.jta.api.requests.UpdateAction;
-
 import java.time.LocalDateTime;
 
 /**
  * Represents a stream schedule segment.
  * @see StreamSchedule
  */
-public interface StreamScheduleSegment {
-
-    /**
-     * Returns the segment id.
-     * @return the id.
-     */
-    String getId();
+public interface StreamScheduleSegment extends IDable<String> {
 
     /**
      * Returns the title of the segment.

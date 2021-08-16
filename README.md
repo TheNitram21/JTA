@@ -41,6 +41,9 @@ public static void main(String[] args) {
   // Create a bot.
   JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET");
   
+  // Set the chat OAuth token.
+  bot.setChatOAuthToken("OAUTH");
+  
   // Get the user. In this case, I chose myself.
   User user = bot.getUserByName("TheNitram21");
   
@@ -49,7 +52,7 @@ public static void main(String[] args) {
   
   try {
     // Connect to the chat.
-    chat.connect("OAUTH", false);
+    chat.connect(false);
     
     // Send the message.
     chat.sendMessage("Hi KonCha");
@@ -73,6 +76,9 @@ public static void main(String[] args) {
   // Create a bot.
   JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET");
   
+  // Set the chat OAuth token.
+  bot.setChatOAuthToken("OAUTH");
+  
   // Add the listener.
   bot.addEventListeners(new MessageListener());
   
@@ -84,7 +90,7 @@ public static void main(String[] args) {
   
   try {
     // Connect to the chat.
-    chat.connect("OAUTH", false);
+    chat.connect(false);
     
     // Send the message.
     chat.sendMessage("Hi KonCha");

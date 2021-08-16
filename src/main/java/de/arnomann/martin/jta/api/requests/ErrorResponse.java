@@ -1,7 +1,7 @@
 package de.arnomann.martin.jta.api.requests;
 
-import org.json.JSONObject;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
+import org.json.JSONObject;
 
 /**
  * Represents an error response.

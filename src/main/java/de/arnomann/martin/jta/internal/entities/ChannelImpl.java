@@ -1,14 +1,13 @@
 package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.PredictionState;
 import de.arnomann.martin.jta.api.entities.*;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.EntityUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
@@ -26,11 +25,11 @@ import java.util.Map;
 
 public class ChannelImpl implements Channel {
 
-    private final JTABot bot;
-    private final User user;
+    private final JTABotImpl bot;
+    private final UserImpl user;
     private JSONObject json;
 
-    public ChannelImpl(JTABot bot, User user, JSONObject json) {
+    public ChannelImpl(JTABotImpl bot, UserImpl user, JSONObject json) {
         this.bot = bot;
         this.user = user;
         this.json = json;
@@ -68,7 +67,7 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public User getUser() {
+    public UserImpl getUser() {
         return user;
     }
 
@@ -90,7 +89,7 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public HypeTrain getHypeTrain() {
+    public HypeTrainImpl getHypeTrain() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=" +
                 getUser().getId(), this.bot.defaultGetterHeaders());
 
@@ -237,7 +236,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void setStreamTitle(String title) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channels?broadcaster_id=" +
@@ -255,7 +254,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void setStreamLanguage(Locale locale) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).patch("https://api.twitch.tv/helix/channels?broadcaster_id=" +
@@ -274,7 +273,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void startPrediction(String title, String answerOne, String answerTwo, int time) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         Response response = new Requester(JTA.getClient()).post("https://api.twitch.tv/helix/predictions", RequestBody.create(
@@ -293,7 +292,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void startPoll(String title, String[] choices, int time) {
-        Map<String, String> headers = this.bot.defaultSetterHeaders();
+        Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
         StringBuilder choicesJSON = new StringBuilder("[");
@@ -343,7 +342,7 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 

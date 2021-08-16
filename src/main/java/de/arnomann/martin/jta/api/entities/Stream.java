@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * Represents a live stream.
  */
-public interface Stream extends Updatable, IDable {
+public interface Stream extends Updatable, IDable<Long> {
 
     /**
      * Returns the streaming channel.

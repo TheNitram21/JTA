@@ -1,8 +1,8 @@
 package de.arnomann.martin.jta.api.events;
 
 import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.api.entities.Message;
+import de.arnomann.martin.jta.internal.util.Helpers;
 
 /**
  * Represents a event that gets triggered when a message is received.

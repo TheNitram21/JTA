@@ -6,7 +6,6 @@ import de.arnomann.martin.jta.api.Permission;
 import de.arnomann.martin.jta.api.entities.ChatBadge;
 import de.arnomann.martin.jta.api.entities.Emote;
 import de.arnomann.martin.jta.api.entities.User;
-import de.arnomann.martin.jta.api.entities.Video;
 import de.arnomann.martin.jta.api.events.Listener;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
@@ -17,10 +16,8 @@ import de.arnomann.martin.jta.internal.entities.*;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.Helpers;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
-import okhttp3.OkHttp;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,18 +32,19 @@ public class JTABotImpl implements JTABot {
     private final String clientId;
     private final String clientSecret;
     private String accessToken = "";
-    private long tokenExpiresWhen = 0L;
+    private long tokenExpiresWhen = -1L;
     private String redirectUri = "http://localhost";
     private String oAuthToken = "";
     private final List<Permission> neededPermissions = new ArrayList<>();
-    private String userAccessToken = "";
+    private final Map<Long, String> userAccessTokens = new HashMap<>();
+
+    private final List<UserImpl> cachedUsers = new ArrayList<>();
 
     public JTABotImpl(String clientId, String clientSecret) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
     }
 
-    @Override
     public boolean isTokenValid() {
         return tokenExpiresWhen >= System.currentTimeMillis() + 10000;
     }
@@ -85,10 +83,10 @@ public class JTABotImpl implements JTABot {
                 sb.append(" ");
         }
 
-        String BASELINK = "https://id.twitch.tv/oauth2/authorize?client_id={}&redirect_uri={}&response_type=token&scope={}";
+        String BASE_LINK = "https://id.twitch.tv/oauth2/authorize?client_id={}&redirect_uri={}&response_type=token&scope={}";
 
         try {
-            return new URL(Helpers.format(BASELINK, getClientId(), redirectUri, sb.toString()));
+            return new URL(Helpers.format(BASE_LINK, getClientId(), redirectUri, sb.toString()));
         } catch (MalformedURLException ignored) {
             // WILL NEVER HAPPEN
             return null;
@@ -96,14 +94,85 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
-    public void setUserAccessToken(String userToken) {
+    public void setUserAccessToken(User user, String userToken) {
+        Checks.notNull(user, "User");
         Checks.notEmpty(userToken, "User Access Token");
-        this.userAccessToken = userToken;
+
+        if(!isTokenValid(userToken))
+            throw new JTAException("Access Token is not valid!");
+
+        userAccessTokens.put(user.getId(), userToken);
     }
 
     @Override
-    public String getUserAccessToken() {
-        return this.userAccessToken;
+    public void addUserAccessTokens(Map<User, String> tokens) {
+        Checks.notNull(tokens, "User Access Tokens");
+
+        tokens.forEach((user, token) -> {
+            if(!isTokenValid(token))
+                throw new JTAException("Access Token of user " + user.getName() + " is not valid!");
+
+            userAccessTokens.put(user.getId(), token);
+        });
+    }
+
+    @Override
+    public String getUserAccessToken(User user) {
+        return userAccessTokens.get(user.getId());
+    }
+
+    @Override
+    public boolean isTokenValid(String token) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "OAuth " + token);
+
+        Response response = new Requester(JTA.getClient()).request("https://id.twitch.tv/oauth2/validate", headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            System.out.println(json.toString(2));
+
+            if(json.has("message") && json.has("status") && json.getString("message").equals("invalid access token") && json
+                    .getInt("status") == 401)
+                return false;
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            return true;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of token", e);
+        }
+    }
+
+    @Override
+    public EnumSet<Permission> getTokenPermissions(String token) {
+        if(!isTokenValid(token))
+            throw new JTAException("Access Token is not valid!");
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "OAuth " + token);
+
+        Response response = new Requester(JTA.getClient()).request("https://id.twitch.tv/oauth2/validate", headers);
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            System.out.println(json.toString(2));
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            EnumSet<Permission> permissions = EnumSet.noneOf(Permission.class);
+
+            for(Object obj : json.getJSONArray("scopes"))
+                permissions.add(Permission.getByScope((String) obj));
+
+            return permissions;
+        } catch (IOException e) {
+            throw new JTAException("Error while trying to read JSON of token", e);
+        }
     }
 
     @Override
@@ -116,7 +185,6 @@ public class JTABotImpl implements JTABot {
         if(!redirectUri.isBlank()) this.redirectUri = redirectUri;
     }
 
-    @Override
     public Map<String, String> defaultGetterHeaders() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + getToken());
@@ -124,12 +192,9 @@ public class JTABotImpl implements JTABot {
         return headers;
     }
 
-    @Override
-    public Map<String, String> defaultSetterHeaders() {
-        Checks.notEmpty(this.userAccessToken, "User Access Token");
-
+    public Map<String, String> defaultSetterHeaders(User user) {
         Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + getUserAccessToken());
+        headers.put("Authorization", "Bearer " + getUserAccessToken(user));
         headers.put("Client-ID", getClientId());
         return headers;
     }
@@ -141,6 +206,10 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserByName(String name) {
+        for(UserImpl user : cachedUsers)
+            if(EntityUtils.userNameToId(user.getName()).equals(EntityUtils.userNameToId(name)))
+                return user;
+
         String nameToSearch = EntityUtils.userNameToId(name);
 
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?login=" + nameToSearch, this
@@ -157,7 +226,9 @@ public class JTABotImpl implements JTABot {
 
             JSONArray jsonArrayData = json.getJSONArray("data");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(name)) {
-                return new UserImpl(jsonArrayData.getJSONObject(0), this);
+                UserImpl user = new UserImpl(jsonArrayData.getJSONObject(0), this);
+                cachedUsers.add(user);
+                return user;
             }
         } catch (JSONException | IOException e) {
             throw new JTAException("Error while reading JSON", e);
@@ -167,6 +238,10 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserById(long id) {
+        for(UserImpl user : cachedUsers)
+            if(user.getId().equals(id))
+                return user;
+
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users?id=" + id, this
                 .defaultGetterHeaders());
 
@@ -179,7 +254,9 @@ public class JTABotImpl implements JTABot {
             if(json.getJSONArray("data").isEmpty())
                 throw new JTAException("No user with id " + id + " found!");
 
-            return new UserImpl(json, this);
+            UserImpl user = new UserImpl(json, this);
+            cachedUsers.add(user);
+            return user;
         } catch (JSONException | IOException e) {
             JTA.getLogger().error(Helpers.format("No results: No user with id {} found.", id));
         }

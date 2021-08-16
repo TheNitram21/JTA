@@ -1,14 +1,13 @@
 package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.HypeTrain;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
@@ -18,11 +17,11 @@ import java.io.IOException;
 
 public class HypeTrainImpl implements HypeTrain {
 
-    private final JTABot bot;
-    private final Channel channel;
+    private final JTABotImpl bot;
+    private final ChannelImpl channel;
     private JSONObject json;
 
-    public HypeTrainImpl(JTABot bot, Channel channel, JSONObject json) {
+    public HypeTrainImpl(JTABotImpl bot, ChannelImpl channel, JSONObject json) {
         this.bot = bot;
         this.channel = channel;
         this.json = json;
@@ -39,7 +38,7 @@ public class HypeTrainImpl implements HypeTrain {
     }
 
     @Override
-    public Channel getChannel() {
+    public ChannelImpl getChannel() {
         return channel;
     }
 

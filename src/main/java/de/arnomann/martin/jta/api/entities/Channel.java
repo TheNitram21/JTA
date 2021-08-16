@@ -1,8 +1,7 @@
 package de.arnomann.martin.jta.api.entities;
 
-import de.arnomann.martin.jta.api.PredictionState;
-import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
+import de.arnomann.martin.jta.api.requests.UpdateAction;
 
 import java.util.List;
 import java.util.Locale;
@@ -10,7 +9,7 @@ import java.util.Locale;
 /**
  * Represents a twitch channel that can go live.
  */
-public interface Channel extends Updatable, IDable {
+public interface Channel extends Updatable, IDable<Long> {
 
     /**
      * Returns the chat of the channel.

@@ -23,18 +23,30 @@ public class JTATest {
         JTA.initialize();
 
         bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3");
+        bot.addNeededPermissions(EnumSet.of(Permission.CHANNEL_MANAGE_STREAM));
         bot.setChatOAuthToken(chatOAuth);
-        bot.setUserAccessToken("wfegoq0yzxewpsk0oay0bu3wykgtgr");
+
+        System.out.println(bot.getUserAccessTokenLink());
+
+        nitram = bot.getUserByName("TheNitram21");
+        User nitramTheSecond = bot.getUserByName("TheNitram21");
+        if(nitram.equals(nitramTheSecond))
+            System.out.println("User-Caching is working!");
+        System.out.println(nitram.hashCode() + System.lineSeparator() + nitramTheSecond.hashCode());
+
+        bot.setUserAccessToken(nitram, "q1433wkx68c3gbl419olg0bitdg4j8");
+
+        System.out.println(bot.getTokenPermissions(bot.getUserAccessToken(nitram)));
 
         l = new Logger();
 
         bot.registerEventListeners(new EventListener());
 
-        nitram = bot.getUserByName("TheNitram21");
-
         System.out.println("Ich bin" + (nitram.getChannel().isLive().queue() ? " " : " nicht ") + "live.");
         System.out.println("Nitram user creation date: " + nitram.getCreationTime().getDayOfMonth() + "." + nitram.getCreationTime().getMonthValue() + "." +
                 nitram.getCreationTime().getYear());
+
+        nitram.getChannel().setStreamTitle("JTA!!!");
 
         Chat nitramChat = nitram.getChannel().getChat();
 
@@ -104,6 +116,7 @@ public class JTATest {
         }
 
         l.info("Successfully tested API.");
+        bot.stop();
     }
 
 }

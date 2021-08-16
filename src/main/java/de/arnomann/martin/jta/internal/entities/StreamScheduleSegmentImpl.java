@@ -1,20 +1,19 @@
 package de.arnomann.martin.jta.internal.entities;
 
-import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.entities.StreamSchedule;
 import de.arnomann.martin.jta.api.entities.StreamScheduleSegment;
 import de.arnomann.martin.jta.api.util.TimeUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import org.json.JSONObject;
 
 import java.time.LocalDateTime;
 
 public class StreamScheduleSegmentImpl implements StreamScheduleSegment {
 
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private JSONObject json;
-    private final StreamSchedule schedule;
+    private final StreamScheduleImpl schedule;
 
-    public StreamScheduleSegmentImpl(JTABot bot, JSONObject json, StreamSchedule schedule) {
+    public StreamScheduleSegmentImpl(JTABotImpl bot, JSONObject json, StreamScheduleImpl schedule) {
         this.bot = bot;
         this.json = json;
         this.schedule = schedule;
@@ -36,7 +35,7 @@ public class StreamScheduleSegmentImpl implements StreamScheduleSegment {
     }
 
     @Override
-    public StreamSchedule getSchedule() {
+    public StreamScheduleImpl getSchedule() {
         return schedule;
     }
 

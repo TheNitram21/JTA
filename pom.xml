@@ -7,7 +7,7 @@
     <groupId>de.arnomann.martin</groupId>
 
     <artifactId>JTA</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
     <name>JTA - Java Twitch API</name>
     <description>A Java wrapper for the Twitch API</description>
 

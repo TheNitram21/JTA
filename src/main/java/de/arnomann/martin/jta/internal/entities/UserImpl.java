@@ -2,19 +2,18 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Channel;
-import de.arnomann.martin.jta.api.entities.StreamSchedule;
+import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.EntityUtils;
 import de.arnomann.martin.jta.api.util.TimeUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
-import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
-import okhttp3.*;
+import okhttp3.Response;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,20 +21,34 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class UserImpl implements User {
 
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private JSONObject json;
     private final String name;
 
-    public UserImpl(JSONObject json, JTABot bot) {
+    public UserImpl(JSONObject json, JTABotImpl bot) {
         this.bot = bot;
         this.json = json;
         this.name = json.getString("display_name");
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserImpl user = (UserImpl) o;
+
+        return Objects.equals(name, user.name) && getId().equals(user.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return name != null ? name.hashCode() : 0;
     }
 
     @Override
@@ -61,7 +74,7 @@ public class UserImpl implements User {
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 
@@ -71,7 +84,7 @@ public class UserImpl implements User {
     }
 
     @Override
-    public Channel getChannel() {
+    public ChannelImpl getChannel() {
         String nameToSearch = EntityUtils.userNameToId(this);
 
         Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch,
@@ -101,7 +114,7 @@ public class UserImpl implements User {
     }
 
     @Override
-    public StreamSchedule getStreamSchedule() {
+    public StreamScheduleImpl getStreamSchedule() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/schedule?broadcaster_id=" + getId(),
                 this.bot.defaultGetterHeaders());
 
@@ -142,7 +155,7 @@ public class UserImpl implements User {
     @Override
     public List<User> getBlockedUsers() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users/blocks?broadcaster_id=" +
-                getId(), this.bot.defaultSetterHeaders());
+                getId(), this.bot.defaultSetterHeaders(this));
 
         try {
             JSONObject json = new JSONObject(response.body().string());

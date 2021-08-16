@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 /**
  * Represents a twitch video.
  */
-public interface Video extends IDable, Updatable {
+public interface Video extends IDable<Long>, Updatable {
 
     /**
      * Returns who streamed the video.

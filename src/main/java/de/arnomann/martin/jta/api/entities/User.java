@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Represents a twitch user.
  */
-public interface User extends Updatable, IDable {
+public interface User extends Updatable, IDable<Long> {
 
     /**
      * Gets the name of the user.

@@ -14,13 +14,6 @@ import java.util.Map;
 public interface JTABot {
 
     /**
-     * Checks, whether the token is valid or not.
-     *
-     * @return whether the token is valid or not.
-     */
-    boolean isTokenValid();
-
-    /**
      * "Generates" a new token. <b>The token should not be saved in a variable because tokens get invalidated after a minute.</b>
      *
      * @return the new token.
@@ -34,16 +27,38 @@ public interface JTABot {
     URL getUserAccessTokenLink();
 
     /**
-     * Sets the user access token. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
+     * Adds a user access token. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
+     * @param user the user.
      * @param userToken the user access token.
      */
-    void setUserAccessToken(String userToken);
+    void setUserAccessToken(User user, String userToken);
 
     /**
-     * Returns the user access token.
+     * Adds a list of user access tokens. A detailed manual on how to get this can be found <a href="https://github.com/NitramMann21/JTA/blob/development/.tutorials/HOW_TO_GET_USER_ACCESS_TOKENS.md">here</a>.
+     * @param tokens the tokens.
+     */
+    void addUserAccessTokens(Map<User, String> tokens);
+
+    /**
+     * Returns the user access token of a user.
+     * @param user the user to get the access token from.
      * @return the user access token.
      */
-    String getUserAccessToken();
+    String getUserAccessToken(User user);
+
+    /**
+     * Returns whether the token is valid.
+     * @param token the token.
+     * @return if the token is valid.
+     */
+    boolean isTokenValid(String token);
+
+    /**
+     * Returns a list containing all permissions the token has.
+     * @param token the token.
+     * @return the permissions.
+     */
+    EnumSet<Permission> getTokenPermissions(String token);
 
     /**
      * Returns the client id.
@@ -57,18 +72,6 @@ public interface JTABot {
      * @param redirectUri the redirect uri.
      */
     void setRedirectUri(String redirectUri);
-
-    /**
-     * Returns the default getter headers (Client-ID and Access Token).
-     * @return the default getter headers.
-     */
-    Map<String, String> defaultGetterHeaders();
-
-    /**
-     * Returns the default setter headers (Client-ID and User Access Token). <b>In most cases, you need to add an "Content-Type" header to the map.</b>
-     * @return the default setter headers.
-     */
-    Map<String, String> defaultSetterHeaders();
 
     /**
      * Stops the bot.

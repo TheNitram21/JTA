@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Represents a twitch team.
  */
-public interface Team extends Updatable, IDable {
+public interface Team extends Updatable, IDable<Long> {
 
     /**
      * Returns the members of the team.

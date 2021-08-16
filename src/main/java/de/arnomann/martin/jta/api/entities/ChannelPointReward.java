@@ -2,24 +2,18 @@ package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
-import java.awt.Color;
+import java.awt.*;
 
 /**
  * Represents a twitch channel point reward.
  */
-public interface ChannelPointReward extends Updatable {
+public interface ChannelPointReward extends Updatable, IDable<String> {
 
     /**
      * Returns the channel of this channel point reward.
      * @return the channel.
      */
     Channel getChannel();
-
-    /**
-     * Returns the id of the reward.
-     * @return the id.
-     */
-    String getId();
 
     /**
      * Returns the background color of the reward.

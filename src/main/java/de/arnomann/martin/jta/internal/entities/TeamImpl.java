@@ -1,7 +1,6 @@
 package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.JTABot;
 import de.arnomann.martin.jta.api.entities.Team;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
@@ -9,6 +8,7 @@ import de.arnomann.martin.jta.api.exceptions.JTAException;
 import de.arnomann.martin.jta.api.requests.ErrorResponse;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 import de.arnomann.martin.jta.api.util.TimeUtils;
+import de.arnomann.martin.jta.internal.JTABotImpl;
 import de.arnomann.martin.jta.internal.requests.Requester;
 import de.arnomann.martin.jta.internal.util.ResponseUtils;
 import okhttp3.Response;
@@ -17,20 +17,21 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TeamImpl implements Team {
 
-    private final JTABot bot;
+    private final JTABotImpl bot;
     private JSONObject json;
 
-    public TeamImpl(JTABot bot, JSONObject json) {
+    public TeamImpl(JTABotImpl bot, JSONObject json) {
         this.bot = bot;
         this.json = json;
     }
 
     @Override
-    public long getId() {
+    public Long getId() {
         return json.getLong("id");
     }
 
