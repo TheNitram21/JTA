@@ -10,4 +10,4 @@ By the way, you can also just call `JTABot#getUserAccessTokenLink()` after setti
 After opening the page, if done correctly, you should get redirected to a web page with the following pattern:
 `<REDIRECTURI>#access_token=<ACCESSTOKEN>`
 
-Now you only need to call `JTABot#setUserAccessToken(String accessToken)` and fill in your access token from the link above. If you now call `Channel#setStreamTitle(String)` you should not get an Error Response. But you can not just call `setStreamTitle(String)` on any random channel, you can only manage users who have authorized your application (opened the web page and authorized your application). You can also only store one user access token.
+Now you only need to call `JTABot#setUserAccessToken(User user, String accessToken)` and fill in the user you want to manage and the user access token from the link above. If you now call `Channel#setStreamTitle(String)` you should not get an Error Response. But you can not just call `setStreamTitle(String)` on any random channel, you can only manage users who have authorized your application (opened the web page and authorized your application).
