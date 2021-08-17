@@ -1,7 +1,7 @@
 package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.JTABot;
-import de.arnomann.martin.jta.api.PredictionState;
+import de.arnomann.martin.jta.api.PollState;
 import de.arnomann.martin.jta.api.entities.Poll;
 import de.arnomann.martin.jta.api.entities.User;
 import org.json.JSONObject;
@@ -47,7 +47,7 @@ public class PollImpl implements Poll {
     }
 
     @Override
-    public PredictionState getState() {
+    public PollState getState() {
         return PredictionState.valueOf(json.getString("status"));
     }
 
