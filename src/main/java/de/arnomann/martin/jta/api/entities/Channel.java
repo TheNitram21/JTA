@@ -109,15 +109,16 @@ public interface Channel extends Updatable, IDable<Long> {
      * @param time the time of the prediction in seconds. Maximal 1800.
      * @scopes channel:manage:predictions
      */
-    void startPrediction(String title, String answerOne, String answerTwo, int time);
+    Prediction startPrediction(String title, String answerOne, String answerTwo, int time);
 
     /**
      * Starts a poll in this channel.
      * @param title the title.
      * @param choices the choices. Array must not be bigger than 5.
      * @param time the duration of the poll in seconds. Maximal 1800.
+     * @return the created poll.
      * @scopes channel:manage:polls
      */
-    void startPoll(String title, String[] choices, int time);
+    Poll startPoll(String title, String[] choices, int time);
 
 }

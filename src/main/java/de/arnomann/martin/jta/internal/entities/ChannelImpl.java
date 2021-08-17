@@ -272,7 +272,7 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public void startPrediction(String title, String answerOne, String answerTwo, int time) {
+    public PredictionImpl startPrediction(String title, String answerOne, String answerTwo, int time) {
         Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
@@ -285,13 +285,17 @@ public class ChannelImpl implements Channel {
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
-        } catch (IOException | JSONException ignored) {
-            // Ignore it.
+
+            return new PredictionImpl(this.bot, new JSONObject(new Requester(JTA.getClient()).request(
+                    "https://api.twitch.tv/helix/predictions?broadcaster_id=" + getUser().getId(), this.bot.defaultSetterHeaders(getUser())).body()
+                    .string()).getJSONArray("data").getJSONObject(0), getUser());
+        } catch (IOException | JSONException e) {
+            throw new JTAException("Error while trying to read JSON of prediction.", e);
         }
     }
 
     @Override
-    public void startPoll(String title, String[] choices, int time) {
+    public PollImpl startPoll(String title, String[] choices, int time) {
         Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
 
@@ -304,7 +308,7 @@ public class ChannelImpl implements Channel {
         choicesJSON.append("]");
 
         Response response = new Requester(JTA.getClient()).post("https://api.twitch.tv/helix/predictions", RequestBody.create(
-                "{\"broadcaster_id\":\"" + getUser().getId() + "\",\"title\":\"" + title + "\",\"choices\":" + choices +
+                "{\"broadcaster_id\":\"" + getUser().getId() + "\",\"title\":\"" + title + "\",\"choices\":" + choicesJSON +
                 ",\"duration\":" + time + "}", null), headers);
 
         try {
@@ -312,8 +316,12 @@ public class ChannelImpl implements Channel {
 
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
-        } catch (IOException | JSONException ignored) {
-            // Ignore it.
+
+            return new PollImpl(this.bot, new JSONObject(new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/polls?broadcaster_id=" +
+                    getUser().getId(), this.bot.defaultSetterHeaders(getUser())).body().string()).getJSONArray("data").getJSONObject(0),
+                    getUser());
+        } catch (IOException | JSONException e) {
+            throw new JTAException("Error while trying to read JSON of poll.", e);
         }
     }
 
