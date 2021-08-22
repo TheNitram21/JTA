@@ -118,6 +118,12 @@ public interface JTABot {
     Video getVideoById(long id);
 
     /**
+     * Returns the games with the most views.
+     * @return the top games.
+     */
+    List<String> getTopGames();
+
+    /**
      * Registers event listeners.
      *
      * @param first the first listener.

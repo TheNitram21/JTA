@@ -320,6 +320,27 @@ public class JTABotImpl implements JTABot {
     }
 
     @Override
+    public List<String> getTopGames() {
+        Response response = new Requester(JTA.getClient()).request("https//api.twitch.tv/helix/games/top", this.defaultGetterHeaders());
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if (ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            List<String> topGames = new ArrayList<>();
+
+            for(Object obj : json.getJSONArray("data"))
+                topGames.add(((JSONObject) obj).getString("name"));
+
+            return topGames;
+        } catch(IOException e) {
+            throw new JTAException("Error while trying to read json of top games.", e);
+        }
+    }
+
+    @Override
     public JTABotImpl registerEventListeners(Listener first, Listener... more) {
         EventHandler.registerEventListener(first);
         for(Listener l : more)
