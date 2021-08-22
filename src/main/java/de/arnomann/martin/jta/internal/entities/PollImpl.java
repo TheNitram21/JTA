@@ -48,7 +48,7 @@ public class PollImpl implements Poll {
 
     @Override
     public PollState getState() {
-        return PredictionState.valueOf(json.getString("status"));
+        return PollState.valueOf(json.getString("status"));
     }
 
     @Override
