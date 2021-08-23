@@ -345,7 +345,7 @@ public class ChannelImpl implements Channel {
 
             JSONArray jsonArrayData = json.getJSONArray("data");
             for (Object object : jsonArrayData) {
-                if (((JSONObject) object).getString("display_name").equals(user.getName())) {
+                if (((JSONObject) object).getString("broadcaster_name").equals(user.getName())) {
                     this.json = (JSONObject) object;
                 }
             }
