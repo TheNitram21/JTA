@@ -334,7 +334,7 @@ public class ChannelImpl implements Channel {
     public void update() {
         String nameToSearch = EntityUtils.userNameToId(user);
 
-        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch,
+        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/channels?broadcaster_id=" + getUser().getId(),
                 this.bot.defaultGetterHeaders());
 
         try {
