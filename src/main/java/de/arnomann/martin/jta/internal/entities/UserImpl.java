@@ -85,9 +85,7 @@ public class UserImpl implements User {
 
     @Override
     public ChannelImpl getChannel() {
-        String nameToSearch = EntityUtils.userNameToId(this);
-
-        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/search/channels?query=" + nameToSearch,
+        Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/channels?broadcaster_id=" + getId(),
             this.bot.defaultGetterHeaders());
 
         try {
