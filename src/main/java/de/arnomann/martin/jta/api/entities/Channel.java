@@ -88,6 +88,12 @@ public interface Channel extends Updatable, IDable<Long> {
     List<User> getBannedUsers();
 
     /**
+     * Returns the delay of the stream in seconds.
+     * @return the stream delay.
+     */
+    UpdateAction<Integer> getStreamDelay();
+
+    /**
      * Sets the title of the stream.
      * @param title the new title.
      * @scopes channel:manage:broadcast

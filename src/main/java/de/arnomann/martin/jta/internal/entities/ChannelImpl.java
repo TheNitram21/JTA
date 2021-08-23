@@ -235,6 +235,11 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
+    public UpdateAction<Integer> getStreamDelay() {
+        return new UpdateAction<>(this, () -> json.getInt("delay"));
+    }
+
+    @Override
     public void setStreamTitle(String title) {
         Map<String, String> headers = this.bot.defaultSetterHeaders(getUser());
         headers.put("Content-Type", "application/json");
