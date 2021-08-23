@@ -12,7 +12,7 @@ import java.util.List;
 public class PollImpl implements Poll {
 
     private final JTABot bot;
-    private JSONObject json;
+    private final JSONObject json;
     private final User streamer;
 
     public PollImpl(JTABot bot, JSONObject json, User streamer) {

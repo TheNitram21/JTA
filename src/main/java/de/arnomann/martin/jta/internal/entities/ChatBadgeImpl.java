@@ -7,7 +7,7 @@ import org.json.JSONObject;
 public class ChatBadgeImpl implements ChatBadge {
 
     private final JTABotImpl bot;
-    private JSONObject json;
+    private final JSONObject json;
 
     public ChatBadgeImpl(JTABotImpl bot, JSONObject json) {
         this.bot = bot;

@@ -9,5 +9,5 @@ public enum PollState {
     TERMINATED,
     ARCHIVED,
     MODERATED,
-    INVALID;
+    INVALID
 }

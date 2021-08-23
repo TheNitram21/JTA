@@ -9,7 +9,7 @@ import org.json.JSONObject;
 public class PredictionImpl implements Prediction {
 
     private final JTABot bot;
-    private JSONObject json;
+    private final JSONObject json;
     private final User streamer;
 
     public PredictionImpl(JTABot bot, JSONObject json, User streamer) {

@@ -8,7 +8,7 @@ public class EmoteImpl implements Emote {
 
     private final JTABotImpl bot;
     private final ChannelImpl channel;
-    private JSONObject json;
+    private final JSONObject json;
 
     public EmoteImpl(JTABotImpl bot, ChannelImpl channel, JSONObject json) {
         this.bot = bot;

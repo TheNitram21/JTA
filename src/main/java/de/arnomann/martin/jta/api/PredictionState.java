@@ -4,5 +4,5 @@ public enum PredictionState {
     RESOLVED,
     ACTIVE,
     CANCELLED,
-    LOCKED;
+    LOCKED
 }

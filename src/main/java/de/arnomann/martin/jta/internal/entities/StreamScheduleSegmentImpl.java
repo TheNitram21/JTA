@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class StreamScheduleSegmentImpl implements StreamScheduleSegment {
 
     private final JTABotImpl bot;
-    private JSONObject json;
+    private final JSONObject json;
     private final StreamScheduleImpl schedule;
 
     public StreamScheduleSegmentImpl(JTABotImpl bot, JSONObject json, StreamScheduleImpl schedule) {

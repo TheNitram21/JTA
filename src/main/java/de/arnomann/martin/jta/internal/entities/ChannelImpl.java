@@ -118,7 +118,7 @@ public class ChannelImpl implements Channel {
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
 
-            return (TeamImpl) bot.getTeamByName(json.getJSONArray("data").getJSONObject(0).getString("team_name"));
+            return bot.getTeamByName(json.getJSONArray("data").getJSONObject(0).getString("team_name"));
         } catch (IOException e) {
             throw new JTAException("Error while trying to read JSON of team.", e);
         }
