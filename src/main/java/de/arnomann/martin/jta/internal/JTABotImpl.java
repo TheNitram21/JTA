@@ -321,7 +321,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public List<String> getTopGames() {
-        Response response = new Requester(JTA.getClient()).request("https//api.twitch.tv/helix/games/top", this.defaultGetterHeaders());
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/games/top", this.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
