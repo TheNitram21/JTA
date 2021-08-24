@@ -96,7 +96,7 @@ public class UserImpl implements User {
 
             JSONArray jsonArrayData = json.getJSONArray("data");
             for (Object object : jsonArrayData) {
-                if(((JSONObject) object).getString("display_name").equals(getName())) {
+                if(((JSONObject) object).getString("broadcaster_name").equals(getName())) {
                     return new ChannelImpl(bot, this, (JSONObject) object);
                 }
             }
