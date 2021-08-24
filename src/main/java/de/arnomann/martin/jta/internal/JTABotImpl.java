@@ -38,7 +38,7 @@ public class JTABotImpl implements JTABot {
     private final List<Permission> neededPermissions = new ArrayList<>();
     private final Map<Long, String> userAccessTokens = new HashMap<>();
 
-    private final List<UserImpl> cachedUsers = new ArrayList<>();
+    private final Cache cache = new Cache();
 
     public JTABotImpl(String clientId, String clientSecret) {
         this.clientId = clientId;
@@ -195,6 +195,10 @@ public class JTABotImpl implements JTABot {
         return headers;
     }
 
+    public Cache getCache() {
+        return cache;
+    }
+
     @Override
     public void stop() {
         System.exit(0);
@@ -202,7 +206,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserByName(String name) {
-        for(UserImpl user : cachedUsers)
+        for(UserImpl user : cache.getUsers())
             if(EntityUtils.userNameToId(user.getName()).equals(EntityUtils.userNameToId(name)))
                 return user;
 
@@ -223,7 +227,7 @@ public class JTABotImpl implements JTABot {
             JSONArray jsonArrayData = json.getJSONArray("data");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(name)) {
                 UserImpl user = new UserImpl(jsonArrayData.getJSONObject(0), this);
-                cachedUsers.add(user);
+                cache.add(user);
                 return user;
             }
         } catch (JSONException | IOException e) {
@@ -234,7 +238,7 @@ public class JTABotImpl implements JTABot {
 
     @Override
     public UserImpl getUserById(long id) {
-        for(UserImpl user : cachedUsers)
+        for(UserImpl user : cache.getUsers())
             if(user.getId().equals(id))
                 return user;
 
@@ -251,7 +255,7 @@ public class JTABotImpl implements JTABot {
                 throw new JTAException("No user with id " + id + " found!");
 
             UserImpl user = new UserImpl(json, this);
-            cachedUsers.add(user);
+            cache.add(user);
             return user;
         } catch (JSONException | IOException e) {
             JTA.getLogger().error(Helpers.format("No results: No user with id {} found.", id));

@@ -88,6 +88,12 @@ public interface Channel extends Updatable, IDable<Long> {
     List<User> getBannedUsers();
 
     /**
+     * Returns the game of the channel's stream.
+     * @return the game.
+     */
+    UpdateAction<Game> getGame();
+
+    /**
      * Returns the delay of the stream in seconds.
      * @return the stream delay.
      */

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 /**
  * Represents a live stream.
  */
-public interface Stream extends Updatable, IDable<Long> {
+public interface Stream extends Updatable, IDable<Long > {
 
     /**
      * Returns the streaming channel.
@@ -21,12 +21,6 @@ public interface Stream extends Updatable, IDable<Long> {
      * @return the viewers.
      */
     UpdateAction<Long> getViewers();
-
-    /**
-     * Returns the game of the stream.
-     * @return the game.
-     */
-    UpdateAction<Game> getGame();
 
     /**
      * Returns when the stream started.

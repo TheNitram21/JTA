@@ -235,6 +235,11 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
+    public UpdateAction<Game> getGame() {
+        return new UpdateAction<>(this, () -> new GameImpl(json.getString("game_name"), json.getLong("game_id")));
+    }
+
+    @Override
     public UpdateAction<Integer> getStreamDelay() {
         return new UpdateAction<>(this, () -> json.getInt("delay"));
     }

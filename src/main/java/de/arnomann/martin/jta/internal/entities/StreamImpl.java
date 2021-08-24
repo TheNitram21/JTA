@@ -65,17 +65,6 @@ public class StreamImpl implements Stream {
     }
 
     @Override
-    public UpdateAction<Game> getGame() {
-        return new UpdateAction<>(this, () -> {
-            Game game = Game.getByName(json.getString("game"));
-            if (game == null)
-                throw new JTAException("Game is not implemented yet! Please contact the devs or create a pull request at the GitHub repository.");
-            else
-                return game;
-        });
-    }
-
-    @Override
     public LocalDateTime getWhenStarted() {
         return TimeUtils.twitchTimeToLocalDateTime(json.getString("started_at"));
     }
