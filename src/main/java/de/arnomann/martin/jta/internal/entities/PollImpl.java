@@ -38,7 +38,7 @@ public class PollImpl implements Poll {
 
     @Override
     public List<String> getChoices() {
-        List<String> choices = new ArrayList(5);
+        List<String> choices = new ArrayList<>(5);
 
         for(Object obj : json.getJSONArray("choices"))
             choices.add(((JSONObject) obj).getString("title"));

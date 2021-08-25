@@ -35,7 +35,7 @@ public class Checks {
     }
 
     /**
-     * Checks if <code>argument</code> is not null and doesn't contains <code>null</code> objects.
+     * Checks if <code>argument</code> is not null and doesn't contain <code>null</code> objects.
      * @param argument the argument to check.
      * @param name the name of the objects.
      * @throws ChecksException if <code>argument</code> is null or contains <code>null</code> objects.
@@ -59,7 +59,7 @@ public class Checks {
     }
 
     /**
-     * Checks if <code>argument</code> not null and doesn't contains <code>null</code> and empty objects.
+     * Checks if <code>argument</code> not null and doesn't contain <code>null</code> and empty objects.
      * @param argument the argument to check.
      * @param name the name of the objects.
      * @throws ChecksException if <code>argument</code> contains empty objects.

@@ -43,7 +43,7 @@ public class ChannelImpl implements Channel {
     @Override
     public UpdateAction<Stream> getStream() {
         return new UpdateAction<>(this, () -> {
-            if (!isLive().queue())
+            if (!isLive())
                 throw new JTAException(Helpers.format("Channel {} is not live!", getUser().getName()));
 
             Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + getUser().getId(), this.bot.defaultGetterHeaders());
@@ -323,7 +323,7 @@ public class ChannelImpl implements Channel {
 
         StringBuilder choicesJSON = new StringBuilder("[");
         for(int i = 0; i < choices.length; i++) {
-            choicesJSON.append("{\"title\":\"" + choices[i] + "\"}");
+            choicesJSON.append("{\"title\":\"").append(choices[i]).append("\"}");
             if(i + 1 < choices.length)
                 choicesJSON.append(",");
         }
@@ -349,8 +349,6 @@ public class ChannelImpl implements Channel {
 
     @Override
     public void update() {
-        String nameToSearch = EntityUtils.userNameToId(user);
-
         Response response = new Requester(JTA.getClient()).request("https:///api.twitch.tv/helix/channels?broadcaster_id=" + getUser().getId(),
                 this.bot.defaultGetterHeaders());
 

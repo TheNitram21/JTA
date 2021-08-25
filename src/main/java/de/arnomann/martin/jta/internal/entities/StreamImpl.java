@@ -2,7 +2,6 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.AdLength;
 import de.arnomann.martin.jta.api.JTA;
-import de.arnomann.martin.jta.api.entities.Game;
 import de.arnomann.martin.jta.api.entities.Stream;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
 import de.arnomann.martin.jta.api.exceptions.JTAException;
@@ -46,7 +45,7 @@ public class StreamImpl implements Stream {
 
     @Override
     public void update() {
-        if(!streamer.isLive().queue())
+        if(!streamer.isLive())
             throw new JTAException(Helpers.format("User {} has gone offline!", streamer.getUser().getName()));
 
         Response response = new Requester().request("https://api.twitch.tv/kraken/streams/" + streamer.getUser().getId(), this.bot

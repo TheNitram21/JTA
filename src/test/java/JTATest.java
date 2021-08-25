@@ -1,7 +1,6 @@
 import de.arnomann.martin.jta.api.*;
 import de.arnomann.martin.jta.api.entities.*;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
-import kotlin.ExceptionsKt;
 import org.jibble.pircbot.IrcException;
 
 import java.io.IOException;
