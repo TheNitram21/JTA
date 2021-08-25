@@ -41,7 +41,7 @@ public class JTATest {
 
         bot.registerEventListeners(new EventListener());
 
-        System.out.println("Ich bin" + (nitram.getChannel().isLive().queue() ? " " : " nicht ") + "live.");
+        System.out.println("Ich bin" + (nitram.getChannel().isLive() ? " " : " nicht ") + "live.");
         System.out.println("Nitram user creation date: " + nitram.getCreationTime().getDayOfMonth() + "." + nitram.getCreationTime().getMonthValue() + "." +
                 nitram.getCreationTime().getYear());
 
