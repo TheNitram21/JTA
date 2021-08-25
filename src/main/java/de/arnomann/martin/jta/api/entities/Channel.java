@@ -27,7 +27,7 @@ public interface Channel extends Updatable, IDable<Long> {
      * Checks, whether the channel is live or not.
      * @return whether the channel is live or not.
      */
-    UpdateAction<Boolean> isLive();
+    boolean isLive();
 
     /**
      * Returns the user of the channel.

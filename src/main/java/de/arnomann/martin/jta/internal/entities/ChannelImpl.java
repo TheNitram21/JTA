@@ -62,8 +62,20 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public UpdateAction<Boolean> isLive() {
-        return new UpdateAction<>(this, () -> json.getBoolean("is_live"));
+    public boolean isLive() {
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/streams?user_id=" + getUser().getId(), this.bot
+                .defaultGetterHeaders());
+
+        try {
+            JSONObject json = new JSONObject(response.body().string());
+
+            if(ResponseUtils.isErrorResponse(json))
+                throw new ErrorResponseException(new ErrorResponse(json));
+
+            return !json.getJSONArray("data").isEmpty();
+        } catch(IOException e) {
+            throw new JTAException("Error while trying to read JSON of streams.", e);
+        }
     }
 
     @Override
