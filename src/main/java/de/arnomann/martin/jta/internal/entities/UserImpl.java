@@ -65,7 +65,7 @@ public class UserImpl implements User {
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
 
-            JSONArray jsonArrayData = json.getJSONArray("ta");
+            JSONArray jsonArrayData = json.getJSONArray("data");
             if(jsonArrayData.getJSONObject(0).getString("display_name").equals(getName())) {
                 this.json = jsonArrayData.getJSONObject(0);
             }
