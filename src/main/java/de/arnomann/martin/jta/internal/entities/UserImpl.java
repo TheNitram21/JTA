@@ -2,6 +2,7 @@ package de.arnomann.martin.jta.internal.entities;
 
 import de.arnomann.martin.jta.api.BroadcasterType;
 import de.arnomann.martin.jta.api.JTA;
+import de.arnomann.martin.jta.api.UserType;
 import de.arnomann.martin.jta.api.entities.Channel;
 import de.arnomann.martin.jta.api.entities.User;
 import de.arnomann.martin.jta.api.exceptions.ErrorResponseException;
@@ -109,6 +110,11 @@ public class UserImpl implements User {
     @Override
     public UpdateAction<BroadcasterType> getBroadcasterType() {
         return new UpdateAction<>(this, () -> BroadcasterType.getByString(json.getString("broadcaster_type")));
+    }
+
+    @Override
+    public UpdateAction<UserType> getUserType() {
+        return new UpdateAction<>(this, () -> UserType.getByString(json.getString("type")));
     }
 
     @Override

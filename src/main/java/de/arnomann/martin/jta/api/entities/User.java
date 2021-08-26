@@ -1,6 +1,7 @@
 package de.arnomann.martin.jta.api.entities;
 
 import de.arnomann.martin.jta.api.BroadcasterType;
+import de.arnomann.martin.jta.api.UserType;
 import de.arnomann.martin.jta.api.requests.UpdateAction;
 
 import java.time.LocalDateTime;
@@ -28,6 +29,12 @@ public interface User extends Updatable, IDable<Long> {
      * @return the broadcaster type.
      */
     UpdateAction<BroadcasterType> getBroadcasterType();
+
+    /**
+     * Returns the type of the user.
+     * @return the user type.
+     */
+    UpdateAction<UserType> getUserType();
 
     /**
      * Returns the stream schedule for this user.
