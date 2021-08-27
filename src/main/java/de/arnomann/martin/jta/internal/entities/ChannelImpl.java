@@ -85,8 +85,8 @@ public class ChannelImpl implements Channel {
 
     @Override
     public long getFollowerCount() {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/kraken/channels/" + getId() +
-                "/follows", this.bot.defaultGetterHeaders());
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users/follows?to_id=" getUser().getId(),
+                this.bot.defaultGetterHeaders());
 
         try {
             JSONObject json = new JSONObject(response.body().string());
@@ -94,7 +94,7 @@ public class ChannelImpl implements Channel {
             if(ResponseUtils.isErrorResponse(json))
                 throw new ErrorResponseException(new ErrorResponse(json));
 
-            return json.getLong("_total");
+            return json.getLong("total");
         } catch (IOException e) {
             throw new JTAException("Error while trying to read JSON of followers.", e);
         }
