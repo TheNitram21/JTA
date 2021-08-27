@@ -85,7 +85,7 @@ public class ChannelImpl implements Channel {
 
     @Override
     public long getFollowerCount() {
-        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users/follows?to_id=" getUser().getId(),
+        Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users/follows?to_id=" + getUser().getId(),
                 this.bot.defaultGetterHeaders());
 
         try {
