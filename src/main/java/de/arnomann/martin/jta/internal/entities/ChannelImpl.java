@@ -370,11 +370,6 @@ public class ChannelImpl implements Channel {
     }
 
     @Override
-    public Long getId() {
-        return json.getLong("id");
-    }
-
-    @Override
     public String toString() {
         return "Channel[" + user.getName() + "]";
     }

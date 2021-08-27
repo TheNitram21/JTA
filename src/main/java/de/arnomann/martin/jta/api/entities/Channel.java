@@ -9,7 +9,7 @@ import java.util.Locale;
 /**
  * Represents a twitch channel that can go live.
  */
-public interface Channel extends Updatable, IDable<Long> {
+public interface Channel extends Updatable {
 
     /**
      * Returns the chat of the channel.
