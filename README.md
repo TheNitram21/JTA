@@ -10,7 +10,9 @@ A Java Wrapper for the Twitch API.
 2. [Building your first Bot](#building-your-first-bot)
 3. [Sending Messages](#sending-messages)
 4. [Events](#events)
+5. [Versioning](#versioning)
 6. [Contributing](#contributing)
+7. [Official Guide](#official-guide)
 
 ## Download
 Currently, to get the API, you need to go to [JitPack](https://jitpack.io/#NitramMann21/JTA) and get the dependency there. In the future, I may switch to another maven repository.
@@ -123,6 +125,13 @@ public static void main(String[] args) {
     System.out.println("Clip '" + clip.getSlug() + "': " + clip.getTitle());
 }
 ```
+
+## Versioning
+Here is how the versioning works:
+*Big changes to the API*: Major release.
+*Add classes*: Minor release.
+*Redo classes or add methods*: Patch release.
+*Redo or fix methods*: ID release.
 
 ## Contributing
 You can find a detailed manual for how to contribute [here](https://www.github.com/NitramMann21/JTA/blob/development/CONTRIBUTING.md).
