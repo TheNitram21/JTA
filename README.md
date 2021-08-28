@@ -129,8 +129,8 @@ public static void main(String[] args) {
 ## Versioning
 Here is how the versioning works:
 *Big changes to the API*: Major release.
-*Add classes*: Minor release.
-*Redo classes or add methods*: Patch release.
+*Add or redo features*: Minor release.
+*Add or methods*: Patch release.
 *Redo or fix methods*: ID release.
 
 ## Contributing
