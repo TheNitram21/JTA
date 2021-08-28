@@ -28,7 +28,7 @@ This looks like this:
 public static void main(String[] args) {
   JTA.initialize();
   
-  JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET");
+  JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET").build();
 }
 ```
 This creates a bot instance, however, you see the two Strings. To make it work, you need to replace them. Replace `CLIENTID` with your client id and `CLIENTSECRET` with your client secret.
@@ -41,7 +41,7 @@ public static void main(String[] args) {
   JTA.initialize();
   
   // Create a bot.
-  JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET");
+  JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET").build();
   
   // Set the chat OAuth token.
   bot.setChatOAuthToken("OAUTH");
@@ -76,7 +76,7 @@ public static void main(String[] args) {
   JTA.initialize();
   
   // Create a bot.
-  JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET");
+  JTABot bot = JTABotBuilder.create("CLIENTID", "CLIENTSECRET").build();
   
   // Set the chat OAuth token.
   bot.setChatOAuthToken("OAUTH");
@@ -116,7 +116,7 @@ To get a clip, you only need to call `JTABot#getClipBySlug(String)` and you have
 ```java
 public static void main(String[] args) {
     // Create the bot
-    JTABot bot = JTABotBuilder.create(clientId, clientSecret);
+    JTABot bot = JTABotBuilder.create(clientId, clientSecret).build();
     
     // Get the clip
     Clip clip = bot.getClipBySlug("EnticingCorrectDelicataDansGame-ZjHJQXu6ob2R-j19");

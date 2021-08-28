@@ -21,9 +21,10 @@ public class JTATest {
     public static void main(String[] args) {
         JTA.initialize();
 
-        bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3");
+        bot = JTABotBuilder.create("f2z5yb5i49k63vi1mlv35a3gd39ctv", "6njlhk8ieyjrpvq5lyorz4harwbzo3")
+                .setChatOAuthToken(chatOAuth)
+                .build();
         bot.addNeededPermissions(EnumSet.of(Permission.CHANNEL_MANAGE_STREAM));
-        bot.setChatOAuthToken(chatOAuth);
 
         System.out.println(bot.getUserAccessTokenLink());
 
