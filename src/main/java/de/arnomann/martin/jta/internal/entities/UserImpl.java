@@ -157,6 +157,11 @@ public class UserImpl implements User {
     }
 
     @Override
+    public boolean isFollowing(Channel channel) {
+        return getFollows().contains(channel);
+    }
+
+    @Override
     public List<User> getBlockedUsers() {
         Response response = new Requester(JTA.getClient()).request("https://api.twitch.tv/helix/users/blocks?broadcaster_id=" +
                 getId(), this.bot.defaultSetterHeaders(this));

@@ -49,6 +49,14 @@ public interface User extends Updatable, IDable<Long> {
     List<Channel> getFollows();
 
     /**
+     * Checks, if the user is following the specified channel.
+     * @param channel the channel to check.
+     * @return if the user follows the channel.
+     * @see User#getFollows()
+     */
+    boolean isFollowing(Channel channel);
+
+    /**
      * Returns a list containing all blocked users.
      * @return the blocked users.
      * @scopes user:read:blocked_users
