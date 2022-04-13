@@ -1,4 +1,4 @@
-[![Release](https://jitpack.io/v/NitramMann21/JTA.svg)](https://jitpack.io/#NitramMann21/JTA)
+[![Release](https://jitpack.io/v/TheNitram21/JTA.svg)](https://jitpack.io/#TheNitram21/JTA)
 
 <img align="right" src="https://thenitram21.github.io/jta/icon.png" height="200" width="200">
 
@@ -15,7 +15,7 @@ A Java Wrapper for the Twitch API.
 7. [Official Guide](#official-guide)
 
 ## Download
-Currently, to get the API, you need to go to [JitPack](https://jitpack.io/#NitramMann21/JTA) and get the dependency there. In the future, I may switch to another maven repository.
+Currently, to get the API, you need to go to [JitPack](https://jitpack.io/#TheNitram21/JTA) and get the dependency there. In the future, I may switch to another maven repository.
 
 ## Building your first Bot
 First of all, go to the [Twitch Developer Console](https://dev.twitch.tv/console/apps) and create an application. **2FA (Two Factor Authentication) has to be enabled for that.** Then you can start coding.
@@ -134,7 +134,7 @@ Here is how the versioning works:
 *Redo or fix methods*: ID release.
 
 ## Contributing
-You can find a detailed manual for how to contribute [here](https://www.github.com/NitramMann21/JTA/blob/development/CONTRIBUTING.md).
+You can find a detailed manual for how to contribute [here](https://www.github.com/TheNitram21/JTA/blob/development/CONTRIBUTING.md).
 
 ## Official Guide
-You can find the official guide on my GitHub Pages page, or click [here](https://nitrammann21.github.io/jta/guide/index.html)
+You can find the official guide on my GitHub Pages page, or click [here](https://thenitram21.github.io/jta/guide/index.html)
